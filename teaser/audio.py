@@ -1,4 +1,4 @@
-"""Soundtrack v3: 'Hazy After Hours' (Mixkit, free license) edited on its bar grid,
+"""Soundtrack v3: 'Shoot the Devil Tonight' (Michael Ramir C., Mixkit free license) edited on its bar grid,
 plus Mixkit UI sound effects placed on the exact video cues."""
 import json, subprocess, numpy as np
 from scipy.io import wavfile
@@ -30,22 +30,23 @@ def put(x, t, g=1.0, pan=0.0, bus=None):
 def snap(t): return np.ceil(t * 24 - 1e-6) / 24
 
 # ---------------------------------------------------------------- music edit
-song = load(f'{MUS}/132.mp3')
-PH, BAR = 0.02, T['BAR']
+SONG, PH, INTRO, DROP = '1119', 1.495, [0, 1, 2], 3   # downbeat of bar 0, intro bars (no bass), first full bar
+song = load(f'{MUS}/{SONG}.mp3')
+BAR = T['BAR']
 def bar(k, n=1):
     a = int((PH + k * BAR) * SR); b = int((PH + (k + n) * BAR) * SR)
     return song[a:b]
-# story bed: bars 0-5 then 2-5, hard stop on the "ASAP" bubble
-bed = np.concatenate([fade(bar(k), .004, .004) for k in [0, 1, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3]])
+# story bed: the bass-less intro looped, hard stop on the "ASAP" bubble
+bed = np.concatenate([fade(bar(k), .004, .004) for k in INTRO * 5])
 t0, t1 = T['D'], T['b3']
 bed = bed[:int((t1 - t0) * SR)]
 bed[:int(.4 * SR)] *= np.linspace(0, 1, int(.4 * SR))[:, None]
 bed[-int(.012 * SR):] *= np.linspace(1, 0, int(.012 * SR))[:, None]
-put(bed, t0, .42, bus=mus)
+put(bed, t0, .5, bus=mus)
 # re-entry one bar before the drop, then the drop lands on the first montage frame
 t_back = T['M'] - BAR
 tail_bars = int(np.ceil((T['total'] - T['M']) / BAR)) + 1
-body = bar(7, 1 + tail_bars)
+body = bar(DROP - 1, 1 + tail_bars)
 body[:int(.06 * SR)] *= np.linspace(0, 1, int(.06 * SR))[:, None]
 put(body, t_back, 1.0, bus=mus)
 # fade the music out under the logo
@@ -89,7 +90,7 @@ for c in CUES:
     elif s == 'backspace': put(bsp[rs.integers(len(bsp))], t - .004, .2)
     elif s == 'cmdA': put(hard, t - .08, .16); put(keys[0], t, .2)
     elif s == 'delete': put(hard, t, .26)
-    elif s == 'rclick': put(rclick, t, .12, .15)
+    elif s == 'rclick': put(rclick, t, .06, .15)
     elif s == 'spell': put(spell if t < 2 else spell2, t - .05, .08, .2)
     elif s == 'notify': put(notif, t, .30, .35)
     elif s == 'click': put(click, t, .30, .3)
@@ -106,12 +107,12 @@ amb = load(f'{SFX}/61.mp3'); gl = int(T['D'] * SR)
 amb = amb[int(2 * SR):int(2 * SR) + gl].copy()
 env = np.ones(len(amb)); s0 = int(T['swipe'] * SR); env[s0:] = np.linspace(1, 0, len(amb) - s0) ** 2
 env[:int(.3 * SR)] = np.linspace(0, 1, int(.3 * SR))
-put(norm(amb, .9) * env[:, None], 0, .55)
+put(norm(amb, .9) * env[:, None], 0, .2)
 clash = [norm(first_hit(S(i), dur=.6), .8) for i in (2764, 2763, 2765, 2160)]
 for k, tt in enumerate(np.arange(.15, T['swipe'] - .1, .37)):
-    put(clash[k % 4], tt + rs.uniform(-.06, .06), .09 + .05 * rs.random(), rs.uniform(-.5, .1))
+    put(clash[k % 4], tt + rs.uniform(-.06, .06), .035 + .02 * rs.random(), rs.uniform(-.5, .1))
 lspell = norm(S(873), .8); poof = norm(first_hit(S(3082), dur=1.2, thr=.1), .8)
-for st in (1.2, 2.8): put(lspell, st - .03, .16, .1); put(poof, st + .28, .14, .25)
+for st in (1.2, 2.8): put(lspell, st - .03, .07, .1); put(poof, st + .28, .06, .25)
 mix += mus
 # ---------------------------------------------------------------- master: loudness + look-ahead limiter
 from scipy.ndimage import maximum_filter1d, uniform_filter1d

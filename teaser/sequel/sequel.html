@@ -1,0 +1,350 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Inter;src:url(fonts/inter-400.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/inter-500.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/inter-600.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/inter-700.ttf);font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:Inter,"Noto Color Emoji",sans-serif;-webkit-font-smoothing:antialiased;color:#1d1d1f}
+.emoji{font-family:"Noto Color Emoji"}
+.layer{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;display:none}
+
+/* ---------- game (cold open) ---------- */
+#L_game{background:#10140e}
+#gcam{position:absolute;left:0;top:0;width:2880px;height:1620px;transform-origin:0 0}
+#gcam img{position:absolute;left:0;top:0;width:2880px;height:1620px}
+#gblur{filter:blur(7px);-webkit-mask-image:linear-gradient(to bottom,#000 0%,transparent 34%,transparent 62%,#000 100%)}
+#gvig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 70% at 50% 48%,transparent 55%,rgba(5,8,4,.55) 100%)}
+.gpanel{position:absolute;background:linear-gradient(180deg,rgba(28,30,36,.92),rgba(12,13,17,.96));box-shadow:0 0 0 1px rgba(214,178,98,.35),0 10px 30px rgba(0,0,0,.5)}
+#banner{position:absolute;left:1386px;top:18px;width:516px;padding:18px 20px;border-radius:24px;background:rgba(44,44,50,.62);backdrop-filter:blur(34px) saturate(170%);-webkit-backdrop-filter:blur(34px) saturate(170%);box-shadow:0 0 0 1px rgba(255,255,255,.12),0 24px 60px rgba(0,0,0,.5);display:flex;gap:16px;color:#fff}
+#banner .ic{width:54px;height:54px;border-radius:13px;background:linear-gradient(#65d86f,#1fb141);flex:none;display:flex;align-items:center;justify-content:center}
+#banner .a{font-size:16px;color:rgba(255,255,255,.62);display:flex;justify-content:space-between}
+#banner .w{font-size:20px;font-weight:600;margin-top:2px}#banner .x{font-size:19px;margin-top:2px}
+
+/* ---------- desktop / messages ---------- */
+#L_desk{background:#0b1024}
+#wall{position:absolute;inset:0;background:url(assets/wall.jpg) center/cover}
+#menubar{position:absolute;left:0;right:0;top:0;height:36px;background:rgba(20,22,40,.28);backdrop-filter:blur(30px);color:#f5f5f7;font-size:15.5px;display:flex;align-items:center;gap:24px;padding:0 20px;z-index:5}
+#menubar b{font-weight:600}#menubar .r{margin-left:auto}
+#dock{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);height:84px;padding:10px 12px;border-radius:26px;background:rgba(255,255,255,.18);backdrop-filter:blur(34px) saturate(160%);box-shadow:0 0 0 1px rgba(255,255,255,.22);display:flex;gap:12px}
+#dock i{width:64px;height:64px;border-radius:15px;display:block}
+#win{position:absolute;left:250px;top:62px;width:1420px;height:900px;border-radius:16px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.35);display:flex}
+#side{width:380px;flex:none;background:rgba(236,236,242,.72);backdrop-filter:blur(40px) saturate(180%);border-right:1px solid rgba(0,0,0,.08);padding-top:16px}
+.tl{display:flex;gap:9px;padding:4px 20px 18px}.tl i{width:14px;height:14px;border-radius:50%;display:block}
+.search{margin:0 16px 12px;height:36px;border-radius:9px;background:rgba(0,0,0,.07);color:#86868b;font-size:16px;display:flex;align-items:center;padding:0 12px}
+.conv{display:flex;gap:14px;padding:12px 14px;margin:0 8px;border-radius:10px}
+.conv.act{background:#0a84ff;color:#fff}
+.conv .av{width:50px;height:50px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:18px;background:linear-gradient(#a7aebb,#7d8595)}
+.conv .n{font-size:18px;font-weight:600;display:flex;justify-content:space-between}.conv .n span{font-size:14px;font-weight:400;opacity:.6}
+.conv .p{font-size:15px;opacity:.65;margin-top:3px;line-height:1.3;height:39px;overflow:hidden}
+#main{flex:1;display:flex;flex-direction:column;background:#fff}
+#hd{height:74px;flex:none;border-bottom:1px solid #ececf0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+#hd .n{font-size:19px;font-weight:600}#hd .s{font-size:14px;color:#8e8e93;margin-top:2px}
+#msgs{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 26px;overflow:hidden}
+.mw{flex:none;overflow:hidden}
+.m{max-width:64%;font-size:23px;line-height:1.36;padding:11px 17px;border-radius:21px;margin:3px 0;width:fit-content}
+.m.them{background:#e9e9eb;color:#000}.m.me{background:#0a84ff;color:#fff;margin-left:auto}
+.day{text-align:center;font-size:14px;color:#8e8e93;margin:14px 0 8px}
+.typing{display:flex;gap:6px;padding:16px 18px}.typing i{width:10px;height:10px;border-radius:50%;background:#8e8e93;display:block}
+.dlv{text-align:right;font-size:13px;color:#8e8e93;margin:2px 4px 4px}
+#inbar{flex:none;padding:12px 22px 18px;display:flex;align-items:flex-end;gap:12px}
+#infield{flex:1;border:1px solid #d1d1d6;border-radius:22px;padding:9px 18px;font-size:23px;line-height:1.36;min-height:48px;color:#000}
+#infield .ph{color:#b0b0b6}
+#caret{display:inline-block;width:2px;height:27px;background:#0a84ff;vertical-align:-5px}
+#send{width:40px;height:40px;border-radius:50%;background:#0a84ff;flex:none;margin-bottom:4px}
+
+/* ---------- odoo ---------- */
+.odoo{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#f8f9fa;color:#374151;overflow:hidden;transform-origin:0 0}
+.nav{height:68px;background:#71639e;color:#fff;display:flex;align-items:center;padding:0 26px;font-size:22px}
+.nav .gi{display:grid;grid-template-columns:repeat(3,7px);gap:3px;margin-right:22px}.nav .gi i{width:7px;height:7px;background:#fff;display:block;border-radius:1px}
+.nav .br{font-size:25px;margin-right:30px}.nav .it{padding:0 15px;height:68px;display:flex;align-items:center}.nav .it.on{background:rgba(0,0,0,.1)}
+.nav .rt{margin-left:auto;display:flex;align-items:center;gap:26px}.nav .av{width:40px;height:40px;border-radius:6px;background:#7b3fc4;display:flex;align-items:center;justify-content:center;font-size:21px}
+.cp{position:absolute;left:0;right:0;top:68px;height:90px;display:flex;align-items:center;padding:0 26px;gap:12px;border-bottom:1px solid #e5e7eb;background:#fff}
+.btn{height:50px;padding:0 18px;border-radius:5px;display:inline-flex;align-items:center;font-size:21px;font-weight:500}
+.bp{background:#71639e;color:#fff}.bs{background:#e7e9ed;color:#1f2937}
+.lst{position:absolute;left:0;right:0;top:158px;background:#fff}
+.lr{height:60px;display:flex;align-items:center;font-size:21px;border-bottom:1px solid #e5e7eb;padding:0 26px}
+.cb{width:21px;height:21px;border:1.5px solid #cfd3d8;border-radius:4px;margin-right:50px;flex:none}
+.hdl{color:#b3b8bf;margin-right:16px;letter-spacing:-2px}
+.menu{position:absolute;background:#fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.15),0 0 0 1px rgba(0,0,0,.08);font-size:21px;padding:8px 0}
+.menu div{padding:10px 30px}
+.backdrop{position:absolute;inset:0;background:rgba(0,0,0,.28)}
+.modal{position:absolute;left:222px;width:1476px;background:#fff;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.mh{height:92px;display:flex;align-items:center;padding:0 26px;font-size:25px;border-bottom:1px solid #e5e7eb;color:#1f2937}
+.mh .x{margin-left:auto;font-size:34px;color:#6b7280;font-weight:300}
+.mb{padding:34px 26px 24px}
+.fr{display:flex;align-items:center;min-height:48px;font-size:21px;color:#1f2937}
+.fr .k{width:232px;flex:none}
+.rad{width:21px;height:21px;border-radius:50%;border:1.5px solid #cfd3d8;display:inline-block;vertical-align:-4px;margin-right:10px}
+.rad.on{border:6px solid #71639e}
+.tag{display:inline-flex;align-items:center;gap:10px;background:#e8e1e1;border-radius:999px;padding:5px 16px;font-size:18px;color:#1f2937;margin-right:8px;transform-origin:left center}
+.mf{height:98px;border-top:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;gap:8px}
+.toast{position:absolute;right:30px;top:90px;width:470px;background:#fff;border-radius:8px;box-shadow:0 14px 40px rgba(0,0,0,.18);border-left:5px solid #28a745;padding:18px 22px;font-size:19px}
+#fileCard{position:absolute;left:0;top:0;width:250px;height:300px;border-radius:22px;background:#fff;box-shadow:0 60px 120px -30px rgba(20,20,60,.55),0 0 0 1px rgba(0,0,0,.06);display:none;z-index:30;padding:28px;transform-origin:50% 50%}
+#fileCard .ico{width:120px;height:140px;margin:6px auto 0;border-radius:14px;background:linear-gradient(160deg,#8a7cc0,#71639e);position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+#fileCard .ico:after{content:"";position:absolute;right:0;top:0;width:36px;height:36px;background:linear-gradient(225deg,#f8f9fa 50%,#5e5190 50%);border-radius:0 14px 0 8px}
+#fileCard .ico span{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#fff;font-weight:700;font-size:18px;letter-spacing:.04em}
+#fileCard .nm{text-align:center;margin-top:22px;font-size:17px;color:#1f2937;font-weight:500}
+#fileCard .sz{text-align:center;margin-top:4px;font-size:14px;color:#8a8f98}
+
+/* ---------- titles ---------- */
+#L_tt{background:#fbfbfd}
+.tt{position:absolute;left:0;right:0;text-align:center;font-weight:600;letter-spacing:-.035em;color:#1d1d1f}
+.w{display:inline-block;will-change:transform}
+#L_end{background:#fff}
+#logo{position:absolute;left:600px;top:452px;width:720px}
+#endSub{position:absolute;left:0;right:0;top:640px;text-align:center;font-size:24px;color:#86868b}
+#cur{position:absolute;left:0;top:0;width:32px;height:42px;z-index:60;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));display:none}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:70}
+</style></head>
+<body>
+
+<div class="layer" id="L_game">
+  <img id="gstill" src="assets/game_still.jpg" style="position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:45% 55%">
+  <div id="banner"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M12 3.5C6.8 3.5 2.8 7 2.8 11.3c0 2.3 1.2 4.4 3.1 5.8-.2 1.2-.8 2.5-1.8 3.4 2.1-.1 3.8-.9 4.9-1.9 1 .3 2 .4 3 .4 5.2 0 9.2-3.5 9.2-7.8S17.2 3.5 12 3.5z"/></svg></div>
+    <div style="flex:1"><div class="a"><span>MESSAGES</span><span>now</span></div><div class="w">Olivia Grant</div><div class="x">Hi Mike! <span class="emoji">👋</span> Quick one…</div></div></div>
+</div>
+
+<div class="layer" id="L_desk">
+  <div id="wall"></div>
+  <div id="menubar"><b>Messages</b><span>File</span><span>Edit</span><span>View</span><span>Conversation</span><span>Window</span><span>Help</span><span class="r">Mon 28 Sep&nbsp;&nbsp;2:14 PM</span></div>
+  <div id="win">
+    <div id="side">
+      <div class="tl"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+      <div class="search">Search</div>
+      <div class="conv act"><div class="av">OG</div><div style="flex:1;min-width:0"><div class="n">Olivia Grant <span>2:14 PM</span></div><div class="p" id="oPrev">Hi Mike! 👋 Quick one…</div></div></div>
+      <div class="conv"><div class="av">DR</div><div style="flex:1;min-width:0"><div class="n">Daniel Reed <span>Saturday</span></div><div class="p">This report is perfect, thanks Mike!! 🙌</div></div></div>
+      <div class="conv"><div class="av">SL</div><div style="flex:1;min-width:0"><div class="n">Sarah Lee <span>Saturday</span></div><div class="p">Deploy looks good on staging, thanks!</div></div></div>
+      <div class="conv"><div class="av">DT</div><div style="flex:1;min-width:0"><div class="n">Dev Team <span>Friday</span></div><div class="p">Alex: who broke the invoice sequence 😅</div></div></div>
+      <div class="conv"><div class="av">MO</div><div style="flex:1;min-width:0"><div class="n">Mom <span>Friday</span></div><div class="p">Did you eat already?</div></div></div>
+    </div>
+    <div id="main">
+      <div id="hd"><div class="n">Olivia Grant</div><div class="s">Client</div></div>
+      <div id="msgs">
+        <div class="day">Today 2:14 PM</div>
+        <div class="m them">Hi Mike! <span class="emoji">👋</span> Quick one…</div>
+        <div class="mw" id="wT1"><div class="m them typing"><i></i><i></i><i></i></div></div>
+        <div class="mw" id="w2"><div class="m them">Daniel showed us his supplier margin report. We need the exact same one, and kinda fast <span class="emoji">😅</span></div></div>
+        <div class="mw" id="w3"><div class="m me">Don't worry, I gotchu <span class="emoji">😎</span></div></div>
+        <div class="mw" id="w4"><div class="m me">Done <span class="emoji">✅</span></div></div>
+        <div class="mw" id="wD"><div class="dlv">Delivered</div></div>
+        <div class="mw" id="wT2"><div class="m them typing"><i></i><i></i><i></i></div></div>
+        <div class="mw" id="w5"><div class="m them">whoa.</div></div>
+      </div>
+      <div id="inbar"><div id="infield"></div><div id="send"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 29V12M13 18l7-7 7 7" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
+  </div>
+  <div id="dock"><i style="background:linear-gradient(#e8e8ed,#b8b8c2)"></i><i style="background:linear-gradient(#4fa9ff,#1f5fe0)"></i><i style="background:linear-gradient(#65d86f,#1fb141)"></i><i style="background:linear-gradient(#ffcf5a,#f08a1f)"></i><i style="background:linear-gradient(#8e6bff,#5a2fe0)"></i><i style="background:linear-gradient(#3a3f4a,#1a1d24)"></i><i style="background:linear-gradient(#ff6a6a,#d12f4a)"></i></div>
+</div>
+
+<!-- Mike's Odoo: export -->
+<div class="layer" id="L_ex"><div class="odoo" id="oEx">
+  <div class="nav"><div class="gi">%GI%</div><span class="br">BI Studio</span><span class="it">Ask a Question</span><span class="it">Reports</span><span class="it" id="buildEx">Build</span><div class="rt"><span>My Company</span><div class="av">M</div></div></div>
+  <div class="cp"><div class="btn bp">New</div><span style="font-size:27px;margin-left:4px">Dashboards</span><span style="margin-left:390px;width:560px;height:52px;border:1px solid #d8dadd;border-radius:5px;color:#9aa0a6;display:flex;align-items:center;padding:0 18px;font-size:21px">Search...</span><span style="margin-left:auto;font-size:21px">1-7 / 7</span></div>
+  <div class="lst" id="lstEx"></div>
+  <div class="menu" id="bmenu" style="left:458px;top:74px;width:256px;display:none"><div>Datasets</div><div>Report Designer</div><div id="mIE">Import / Export</div><div>Generate Demo Data</div></div>
+  <div class="backdrop" id="bdEx" style="display:none"></div>
+  <div class="modal" id="mEx" style="top:250px;display:none">
+    <div class="mh">Import / Export<span class="x">×</span></div>
+    <div class="mb">
+      <div class="fr" style="margin-bottom:10px"><span><span class="rad on"></span>Export</span><span style="margin-left:26px"><span class="rad"></span>Import</span></div>
+      <div class="fr"><span class="k">Datasets to export</span><span id="c0"></span></div>
+      <div class="fr"><span class="k">Reports to export</span><span id="c1"></span></div>
+      <div class="fr"><span class="k">Questions to export</span><span id="c2"></span></div>
+      <div class="fr"><span class="k">Dashboards to export</span><span id="c3"></span></div>
+      <div class="fr" id="expRow" style="display:none"><span class="k" style="color:#6b7280">Export File</span><span id="expLink" style="color:#5e5190;display:inline-flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 2v10M5 8l5 5 5-5M3 16h14" stroke="#5e5190" stroke-width="2.4" fill="none"/></svg>bi_studio_export.bistudio</span></div>
+    </div>
+    <div class="mf"><div class="btn bp" id="bBuild">Build package</div><div class="btn bs">Close</div></div>
+  </div>
+</div></div>
+
+<!-- Olivia's Odoo: import -->
+<div class="layer" id="L_im"><div class="odoo" id="oIm">
+  <div class="nav"><div class="gi">%GI%</div><span class="br">BI Studio</span><span class="it">Ask a Question</span><span class="it">Reports</span><span class="it on">Build</span><div class="rt"><span>Grant Trading Co.</span><div class="av" style="background:#d9822b">O</div></div></div>
+  <div class="cp"><div class="btn bp">New</div><span style="font-size:27px;margin-left:4px">Dashboards</span><span style="margin-left:390px;width:560px;height:52px;border:1px solid #d8dadd;border-radius:5px;color:#9aa0a6;display:flex;align-items:center;padding:0 18px;font-size:21px">Search...</span><span style="margin-left:auto;font-size:21px" id="cntIm">1-3 / 3</span></div>
+  <div class="lst" id="lstIm"></div>
+  <div class="backdrop" id="bdIm"></div>
+  <div class="modal" id="mIm" style="top:290px">
+    <div class="mh">Import / Export<span class="x">×</span></div>
+    <div class="mb">
+      <div class="fr" style="margin-bottom:10px"><span><span class="rad"></span>Export</span><span style="margin-left:26px"><span class="rad on"></span>Import</span></div>
+      <div class="fr"><span class="k">Package file</span><span id="upl" class="btn bp" style="height:48px">Upload your file</span></div>
+      <div class="fr" style="margin-top:14px"><span class="k">Conflict <sup style="color:#1a8fbf">?</sup></span><span style="color:#374151">Create new</span></div>
+      <div id="val" style="margin-top:16px;display:none;background:#e9f6ee;border-radius:6px;padding:14px 18px;font-size:19px;color:#1e6b3a"></div>
+    </div>
+    <div class="mf"><div class="btn bs" id="bVal">Validate</div><div class="btn bp" id="bImp">Import</div><div class="btn bs">Close</div></div>
+  </div>
+  <div class="toast" id="toast" style="display:none"><b style="color:#1f2937">Import complete</b><div style="color:#4b5563;margin-top:4px">1 dataset, 1 report, 1 question and 1 dashboard created.</div></div>
+  <div id="dashIm" style="position:absolute;left:0;top:68px;right:0;bottom:0;background:#f8f9fa;display:none"></div>
+</div></div>
+
+<div class="layer" id="L_tt"><div id="ttBox"></div></div>
+<div class="layer" id="L_end"><img id="logo" src="assets/1.png"><div id="endSub">BI Studio for Odoo</div></div>
+<div id="fileCard"><div class="ico"><span>.bistudio</span></div><div class="nm">bi_studio_export.bistudio</div><div class="sz">4 items · 38 KB</div></div>
+<div id="flash"></div>
+<svg id="cur" viewBox="0 0 30 40"><path d="M3 2 L3 29 L9.5 23 L14 33.5 L18.5 31.5 L14 21.5 L23 21.5 Z" fill="#000" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+
+<script>
+document.body.innerHTML=document.body.innerHTML.replaceAll('%GI%','<i></i>'.repeat(9));
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));const lerp=(a,b,p)=>a+(b-a)*p;
+const E={lin:x=>x,out3:x=>1-Math.pow(1-x,3),out5:x=>1-Math.pow(1-x,5),expo:x=>x>=1?1:1-Math.pow(2,-10*x),io3:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,io5:x=>x<.5?16*x**5:1-Math.pow(-2*x+2,5)/2,
+ back:x=>{const c1=1.5,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)},spring:x=>x>=1?1:1-Math.exp(-6.5*x)*Math.cos(11*x)};
+const P=(t,a,b,e=E.out3)=>e(clamp((t-a)/(b-a)));
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const emo=s=>esc(s).replace(/(\p{Extended_Pictographic}️?)/gu,'<span class="emoji">$1</span>');
+const show=(id,on)=>{$(id).style.display=on?'block':'none'};
+const CUES=[];const cue=(t,s)=>CUES.push({t:+t.toFixed(4),s});
+function typeSched(text,t0,cps,seed){const r=rng(seed),ch=Array.from(text),out=[];let t=t0;for(let i=0;i<ch.length;i++){let d=(1/cps)*(0.55+r()*0.9);if(ch[i]===' '&&r()<.2)d+=.06;if(',.'.includes(ch[i-1]||''))d+=.12;t+=d;out.push(t)}return out}
+const countAt=(a,t)=>{let n=0;for(const x of a)if(x<=t)n++;return n};
+
+// ============== TIMELINE: music bar = 2.0 s, beat = 0.5 s, bar k starts at 2k ==============
+const T={FPS:24,BAR:2,BEAT:.5};const b=k=>k*.5;   // beat k
+T.banner=b(1);T.click=b(3);T.swipe1=b(3.05);T.D=b(4);
+T.typ1=b(5);T.b2=b(7);
+const TX1="Don't worry, I gotchu 😎";const ty1=typeSched(TX1,b(9.2),15,3);T.send1=b(14);
+T.swipe2=b(15);T.EX=b(16);                       // Mike's Odoo
+T.cBuild=b(17);T.cIE=b(18.5);T.modal=b(19);
+T.chips=[b(20),b(21),b(22),b(23)];
+T.cPkg=b(24);T.link=b(24.6);T.cLink=b(25.5);T.lift=b(26);T.whip=b(27);T.IM=b(28);
+T.land=b(28.5);T.cVal=b(30);T.valLines=[b(30.5),b(31),b(31.5),b(32)];T.cImp=b(32.5);T.toast=b(33);
+T.newRow=b(33.5);T.cOpen=b(34.5);T.dash=b(35);T.swipe3=b(38.5);T.D2=b(39.5);
+const TX2="Done ✅";const ty2=typeSched(TX2,b(40.2),9,5);T.send2=b(42);T.typ3=b(42.6);T.whoa=b(44);
+T.TT=b(48);                                        // titles (music back)
+T.w=[b(48),b(48.5),b(49),b(50),b(51)];             // "No need" "to create" "the same report" "again" "and again."
+T.echo=[b(52),b(52.5),b(53),b(53.5),b(54),b(54.5),b(55)];
+T.tt2=b(56);T.tt3=b(60);T.END=b(64);T.total=b(72);
+window.T=T;
+
+// ============== static fills ==============
+const rowsEx=['[Template] Invoice & Receivable Analysis','[Template] Receivables Overview','[Template] Inventory Movement','[Template] Purchase Analysis','[Template] POS Analysis','[Template] Sales Performance','Margin Analysis'];
+const LH=`<div class="lr" style="font-weight:600;color:#1f2937;background:#f8f9fa"><span class="cb"></span><span style="width:920px">Name</span><span style="width:240px">Owner</span><span>Shared With</span></div>`;
+const LR=(n,o,id='')=>`<div class="lr" ${id?`id="${id}"`:''}><span class="cb"></span><span class="hdl">⋮⋮</span><span style="width:890px">${n}</span><span style="width:240px">${o}</span><span style="margin-left:auto;margin-right:190px;color:#5e5190;font-weight:500">Open</span></div>`;
+$('lstEx').innerHTML=LH+rowsEx.map((n,i)=>LR(n,i<6?'OdooBot':'Mike')).join('');
+$('lstIm').innerHTML=LH+['[Template] Sales Performance','[Template] Purchase Analysis','[Template] POS Analysis'].map(n=>LR(n,'OdooBot')).join('')+LR('Margin Analysis','Olivia','newRow');
+const CH=[['Vendor Margin (compare, do not total)'],['Vendor Margin Comparison'],['Best margin by supplier'],['Margin Analysis']];
+CH.forEach((c,i)=>$('c'+i).innerHTML=`<span class="tag" id="tg${i}">${c[0]} <span style="color:#6b7280">✕</span></span>`);
+$('val').innerHTML=['Package is valid · BI Studio 18.0','✓ 1 dataset','✓ 1 report','✓ 1 question','✓ 1 dashboard'].map((x,i)=>`<span id="vl${i}" style="display:inline-block;margin-right:${i?22:30}px;font-weight:${i?500:600}">${x}</span>`).join('');
+// imported dashboard (simple tiles)
+const V=[['Northwind',34.8],['Harbor',31.2],['Summit',29.7],['Bluebell',27.4],['Oakridge',25.9],['Pioneer',22.3],['Crescent',19.6],['Evergreen',17.1]];
+function bars(w,h,p){let s=`<svg width="${w}" height="${h}" font-family="Inter">`;const g=w/V.length,bw=g*.62;V.forEach((v,i)=>{const q=E.spring(clamp(p*2-i*.1));const bh=(h-40)*v[1]/40*q;s+=`<rect x="${i*g+(g-bw)/2}" y="${h-30-bh}" width="${bw}" height="${Math.max(0,bh)}" rx="6" fill="${i?'#4ea7f2':'#12a45c'}"/><text x="${i*g+g/2}" y="${h-6}" font-size="15" fill="#6b7280" text-anchor="middle">${v[0]}</text>`});return s+'</svg>'}
+$('dashIm').innerHTML=`<div style="position:absolute;left:30px;top:24px;font-size:28px;color:#1f2937">Margin Analysis</div>`+[0,1,2,3].map(i=>`<div id="dt${i}" style="position:absolute;left:${30+(i%2)*940}px;top:${90+Math.floor(i/2)*460}px;width:910px;height:430px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.05);padding:22px 26px"><div style="font-size:20px;font-weight:600">${['Margin by vendor','Average margin %','Qty sold by vendor','Revenue vs margin'][i]}</div><div id="dc${i}" style="margin-top:16px"></div></div>`).join('');
+
+// ============== helpers ==============
+function wrapAnim(id,t,a,dur=.3,from='left'){const w=$(id);if(!w._h){w.style.height="auto";w._h=w.offsetHeight}const p=P(t,a,a+dur,E.out3);w.style.height=(w._h*p)+'px';const m=w.firstElementChild;m.style.opacity=clamp(p*1.5);m.style.transform=`translateY(${(1-p)*10}px) scale(${lerp(.9,1,E.back(clamp((t-a)/dur)))})`;m.style.transformOrigin=from==='right'?'100% 100%':'0 100%'}
+function typingAnim(id,t,a,bb){const w=$(id);if(!w._h){w.style.height="auto";w._h=w.offsetHeight}if(t<a||t>=bb){w.style.height='0px';return}w.style.height=(w._h*P(t,a,a+.25))+'px';[...w.querySelectorAll('i')].forEach((d,i)=>d.style.opacity=.35+.65*Math.max(0,Math.sin(t*6-i*.9)))}
+function curAt(path,t){let x=path[0][1],y=path[0][2];for(let i=1;i<path.length;i++){const [t1,x1,y1]=path[i],[t0]=path[i-1];const p=E.io3(clamp((t-t0)/(t1-t0)));x=lerp(x,x1,p);y=lerp(y,y1,p)}return[x,y]}
+function cur(x,y,t,clicks){const c=$('cur');c.style.display='block';let s=1;for(const ct of clicks)if(t>=ct-.04&&t<ct+.08)s=.85;c.style.transform=`translate(${x}px,${y}px) scale(${s})`}
+function camOdoo(el,t,t0,t1,z0,z1,fx,fy){const p=E.io3(clamp((t-t0)/(t1-t0)));const z=lerp(z0,z1,p);el.style.transform=`translate(${fx*(1-z)}px,${fy*(1-z)}px) scale(${z})`}
+
+function renderChat(t){
+  typingAnim('wT1',t,T.typ1,T.b2);wrapAnim('w2',t,T.b2);wrapAnim('w3',t,T.send1,.3,'right');wrapAnim('w4',t,T.send2,.3,'right');
+  wrapAnim('wD',t,T.send2+.35);typingAnim('wT2',t,T.typ3,T.whoa);wrapAnim('w5',t,T.whoa,.25);
+  $('oPrev').textContent=t>=T.whoa?'whoa.':t>=T.b2?'Daniel showed us his supplier margin report…':'Hi Mike! 👋 Quick one…';
+  let s='';if(t<T.send1)s=Array.from(TX1).slice(0,countAt(ty1,t)).join('');else if(t>=T.D2&&t<T.send2)s=Array.from(TX2).slice(0,countAt(ty2,t)).join('');
+  const typing=(t>ty1[0]-.3&&t<T.send1)||(t>ty2[0]-.3&&t<T.send2);const caret=typing&&(Math.floor(t*2.2)%2===0||countAt(t<T.send1?ty1:ty2,t)<(t<T.send1?ty1:ty2).length);
+  $('infield').innerHTML=(s?emo(s):'')+(caret?'<span id="caret"></span>':'')+(!s&&!caret?'<span class="ph">iMessage</span>':'');
+  $('send').style.visibility=s?'visible':'hidden';
+}
+function renderEx(t){
+  const o=$('oEx');
+  // camera: settle, then push in on the dialog while the chips fill, pull out for the export link
+  if(t<T.modal)camOdoo(o,t,T.EX,T.modal,1.0,1.0,960,300);
+  else if(t<T.cPkg)camOdoo(o,t,T.modal,T.chips[0]+.2,1.0,1.24,960,540);
+  else camOdoo(o,t,T.cPkg-.1,T.cPkg+.4,1.24,1.12,960,600);
+  $('buildEx').classList.toggle('on',t>=T.cBuild);
+  show('bmenu',t>=T.cBuild&&t<T.cIE+.1);if(t>=T.cBuild){$('bmenu').style.opacity=P(t,T.cBuild,T.cBuild+.12);$('mIE').style.background=t>T.cIE-.4?'#f2f2f4':'#fff'}
+  const mo=t>=T.modal;show('bdEx',mo);show('mEx',mo);if(mo){const p=E.out5(clamp((t-T.modal)/.35));$('mEx').style.transform=`translateY(${(1-p)*-40}px) scale(${lerp(.96,1,p)})`;$('mEx').style.opacity=p;$('bdEx').style.opacity=p}
+  CH.forEach((_,i)=>{const q=E.back(clamp((t-T.chips[i])/.3));const g=$('tg'+i);g.style.transform=`scale(${q})`;g.style.opacity=clamp(q*2)});
+  show('expRow',t>=T.link);if(t>=T.link){$('expRow').style.opacity=P(t,T.link,T.link+.2);$('expRow').style.display='flex'}
+  $('bBuild').style.filter=(t>T.cPkg-.04&&t<T.cPkg+.12)?'brightness(.85)':'none';
+  // cursor
+  const bR=$('buildEx').getBoundingClientRect(),iR=$('mIE').getBoundingClientRect(),pR=$('bBuild').getBoundingClientRect(),lR=$('expLink').getBoundingClientRect();
+  const path=[[T.EX,1300,700],[T.cBuild-.05,bR.left+bR.width/2,bR.top+bR.height/2],[T.cBuild+.3,bR.left+bR.width/2,bR.top+bR.height/2],[T.cIE-.05,iR.left+90,iR.top+iR.height/2],[T.modal+.2,iR.left+90,iR.top+iR.height/2],[T.cPkg-.1,pR.left+pR.width/2,pR.top+pR.height/2],[T.cPkg+.3,pR.left+pR.width/2,pR.top+pR.height/2],[T.cLink-.05,lR.left+120,lR.top+lR.height/2]];
+  if(t<T.lift){const [x,y]=curAt(path,t);cur(x,y,t,[T.cBuild,T.cIE,T.cPkg,T.cLink])}
+}
+function renderIm(t){
+  const o=$('oIm');
+  if(t<T.toast)camOdoo(o,t,T.IM,T.cImp,1.18,1.26,960,560);else camOdoo(o,t,T.toast,T.toast+.5,1.26,1.0,960,540);
+  const dlg=t<T.cImp+.2;show('bdIm',dlg);show('mIm',dlg);
+  const landed=t>=T.land;$('upl').innerHTML=landed?'<svg width="18" height="18" viewBox="0 0 20 20" style="margin-right:10px"><path d="M4 2h8l4 4v12H4z" fill="none" stroke="#fff" stroke-width="2"/></svg>bi_studio_export.bistudio':'Upload your file';
+  $('upl').style.background=landed?'#5e5190':'#71639e';
+  const vs=t>=T.valLines[0];show('val',vs);if(vs)[0,1,2,3,4].forEach(i=>{const q=E.out3(clamp((t-(i?T.valLines[i-1]:T.valLines[0]-.25))/.25));$('vl'+i).style.opacity=q;$('vl'+i).style.transform=`translateY(${(1-q)*8}px)`});
+  const ts=t>=T.toast&&t<T.dash+1.2;show('toast',ts);if(ts){const p=E.out5(clamp((t-T.toast)/.35));$('toast').style.transform=`translateX(${(1-p)*520}px)`}
+  const nr=$('newRow');const q=E.out5(clamp((t-T.newRow)/.4));nr.style.opacity=t<T.newRow?0:1;nr.style.transform=`translateX(${(1-q)*-80}px)`;nr.style.background=t>=T.newRow?`rgba(113,99,158,${.14*(1-P(t,T.newRow+.8,T.dash,E.lin))})`:'#fff';
+  $('cntIm').textContent=t>=T.newRow?'1-4 / 4':'1-3 / 3';
+  const dsh=t>=T.dash;show('dashIm',dsh);
+  if(dsh){[0,1,2,3].forEach(i=>{const k=E.out5(clamp((t-T.dash-i*.12)/.5));$('dt'+i).style.transform=`translateY(${(1-k)*120}px) scale(${lerp(.92,1,k)})`;$('dt'+i).style.opacity=k;
+    const cp=clamp((t-T.dash-.2-i*.12)/1.2);$('dc'+i).innerHTML=i===1?`<div style="font-size:120px;font-weight:600;letter-spacing:-.04em;color:#111">27.4<span style="font-size:60px">%</span></div>`:bars(858,340,cp)})}
+  const uR=$('upl').getBoundingClientRect(),vR=$('bVal').getBoundingClientRect(),mR=$('bImp').getBoundingClientRect(),oR=$('newRow').getBoundingClientRect();
+  if(t>=T.land&&t<T.dash){const path=[[T.land,uR.left+uR.width/2,uR.top+uR.height/2],[T.cVal-.05,vR.left+vR.width/2,vR.top+vR.height/2],[T.cVal+.4,vR.left+vR.width/2,vR.top+vR.height/2],[T.cImp-.05,mR.left+mR.width/2,mR.top+mR.height/2],[T.toast+.2,mR.left+mR.width/2,mR.top+mR.height/2],[T.cOpen-.05,1520,oR.top+30]];
+    const [x,y]=curAt(path,t);cur(x,y,t,[T.cVal,T.cImp,T.cOpen])}
+}
+// file card flight: from export link (Mike) -> over the whip -> onto Upload (Olivia)
+function renderFile(t){
+  const f=$('fileCard');if(t<T.lift||t>T.land+.05){f.style.display='none';return}f.style.display='block';
+  const up=E.out5(clamp((t-T.lift)/.5)),fly=E.io5(clamp((t-T.whip+.1)/.9)),down=E.out3(clamp((t-(T.land-.35))/.35));
+  const x=lerp(lerp(900,835,up),lerp(835,760,fly),fly>0?1:0),y=lerp(lerp(560,380,up),380,fly);
+  const s=lerp(lerp(.3,1.2,up),lerp(1.2,.25,down),down);const rot=lerp(0,-6,up)+fly*14-down*8;
+  f.style.transform=`translate(${x}px,${y}px) scale(${s}) rotate(${rot}deg)`;f.style.opacity=1-clamp((t-T.land+.02)/.07);
+}
+// kinetic titles
+function word(txt,cls,style){return `<span class="w ${cls}" style="${style}">${txt}</span>`}
+$('ttBox').innerHTML=
+ `<div class="tt" id="l1" style="top:340px;font-size:104px">${word('No need','','')} ${word('to create','','')}</div>`+
+ `<div class="tt" id="l2" style="top:470px;font-size:104px">${word('the same report','','')}</div>`+
+ [0,1,2,3,4,5,6,7].map(i=>`<div class="tt" id="ag${i}" style="top:${600+i*0}px;font-size:104px;color:${i?'#c7c7cc':'#1d1d1f'}">${word('again','','')} ${word('and again.','','')}</div>`).join('')+
+ `<div class="tt" id="l4" style="top:470px;font-size:120px"><span style="color:#71639e">BI Studio</span> can help you.</div>`+
+ `<div class="tt" id="l5" style="top:470px;font-size:120px"><span style="background:linear-gradient(90deg,#1b1b24,#0da35a);-webkit-background-clip:text;color:transparent">PORTOKO</span> can help you.</div>`;
+function renderTT(t){
+  const ws=[...$('l1').children,...$('l2').children];
+  [0,1,2].forEach(i=>{const q=E.out5(clamp((t-T.w[i])/.35));ws[i].style.opacity=q;ws[i].style.transform=`translateY(${(1-q)*60}px)`;ws[i].style.filter=`blur(${(1-q)*10}px)`});
+  const phase1=t<T.tt2;['l1','l2'].forEach(id=>$(id).style.display=phase1?'block':'none');
+  // "again and again." then echoes stacking downwards, pushing the block up
+  const shift=E.io3(clamp((t-T.echo[0])/(T.echo[6]-T.echo[0]+.3)))*-260;
+  $('l1').style.transform=`translateY(${shift}px)`;$('l2').style.transform=`translateY(${shift}px)`;
+  for(let i=0;i<8;i++){const el=$('ag'+i);if(!phase1){el.style.display='none';continue}el.style.display='block';
+    const tt=i===0?T.w[3]:T.echo[i-1];const q=E.out5(clamp((t-tt)/.3));el.style.opacity=t<tt?0:(i?clamp(1-i*.1):1)*q;
+    el.style.transform=`translateY(${shift+i*112+(1-q)*50}px)`;
+    if(i===0){const [a,bb]=el.children;const q2=E.out5(clamp((t-T.w[4])/.35));bb.style.opacity=q2;bb.style.transform=`translateY(${(1-q2)*60}px)`;a.style.opacity=q}}
+  const q4=E.out5(clamp((t-T.tt2)/.45));show('l4',t>=T.tt2&&t<T.tt3);$('l4').style.opacity=q4;$('l4').style.transform=`scale(${lerp(1.08,1,q4)})`;
+  const q5=E.out5(clamp((t-T.tt3)/.45));show('l5',t>=T.tt3);$('l5').style.opacity=q5;$('l5').style.transform=`scale(${lerp(1.08,1,q5)})`;
+}
+
+// ============== main ==============
+function hideAll(){['L_game','L_desk','L_ex','L_im','L_tt','L_end'].forEach(id=>{show(id,false);$(id).style.transform='none'});$('cur').style.display='none';$('flash').style.opacity=0}
+function swipe(t,t0,dur,outId,inId,dir=1){const p=E.io5(clamp((t-t0)/dur));$(outId).style.transform=`translateX(${-dir*p*1960}px)`;$(inId).style.transform=`translateX(${dir*(1-p)*1960}px)`;show(outId,true);show(inId,true)}
+window.render=function(t){
+  hideAll();$('fileCard').style.display='none';
+  if(t<T.D){show('L_game',true);$('gstill').style.transform=`scale(${1+t*.012})`;
+    const bi=P(t,T.banner,T.banner+.5,E.out5);$('banner').style.transform=`translateX(${(1-bi)*560}px) scale(${(t>T.click-.05&&t<T.click+.1)?.97:1})`;$('banner').style.opacity=t<T.banner?0:1;
+    if(t<T.swipe1){const [x,y]=curAt([[0,1100,640],[T.click-.05,1640,92]],t);cur(x,y,t,[T.click])}
+    else{renderChat(T.D);swipe(t,T.swipe1,T.D-T.swipe1,'L_game','L_desk')}return}
+  if(t<T.swipe2){show('L_desk',true);renderChat(t);return}
+  if(t<T.EX){renderChat(t);renderEx(T.EX);swipe(t,T.swipe2,T.EX-T.swipe2,'L_desk','L_ex');return}
+  if(t<T.whip){show('L_ex',true);renderEx(t);renderFile(t);return}
+  if(t<T.IM){const p=E.io5(clamp((t-T.whip)/(T.IM-T.whip)));show('L_ex',true);show('L_im',true);renderEx(t);renderIm(T.IM);
+    $('L_ex').style.transform=`translateX(${-p*1960}px)`;$('L_im').style.transform=`translateX(${(1-p)*1960}px)`;renderFile(t);return}
+  if(t<T.swipe3){show('L_im',true);renderIm(t);renderFile(t);return}
+  if(t<T.D2){renderIm(t);renderChat(t);swipe(t,T.swipe3,T.D2-T.swipe3,'L_im','L_desk',-1);return}
+  if(t<T.TT){show('L_desk',true);renderChat(t);return}
+  if(t<T.END){show('L_tt',true);renderTT(t);return}
+  show('L_end',true);const lt=t-T.END;$('logo').style.opacity=P(lt,0,.5);$('logo').style.transform=`scale(${lerp(1.06,1,E.out5(clamp(lt/.8)))})`;$('endSub').style.opacity=P(lt,.5,1.1);
+};
+
+// ============== cues ==============
+(function(){
+ cue(T.banner,'notify');cue(T.click,'click');cue(T.swipe1,'swipe');cue(T.b2,'recv');
+ ty1.forEach((x,i)=>cue(x,TX1[i]===' '?'space':'key'));cue(T.send1,'send');cue(T.swipe2,'swipe');
+ cue(T.cBuild,'click');cue(T.cIE,'click');cue(T.modal,'pop');T.chips.forEach(x=>cue(x,'chip'));
+ cue(T.cPkg,'click');cue(T.link,'tick');cue(T.cLink,'click');cue(T.lift,'lift');cue(T.whip,'whip');cue(T.land,'land');
+ cue(T.cVal,'click');T.valLines.forEach(x=>cue(x,'check'));cue(T.cImp,'click');cue(T.toast,'toast');cue(T.newRow,'tick');cue(T.cOpen,'click');cue(T.dash,'whoosh');
+ cue(T.swipe3,'swipe');ty2.forEach(x=>cue(x,'key'));cue(T.send2,'send');cue(T.whoa,'recv');cue(T.whoa,'music_stop');
+ cue(T.TT,'music_back');cue(T.tt2,'cut');cue(T.tt3,'cut');cue(T.END,'cut');
+})();
+window.CUES=CUES;
+</script>
+</body></html>

@@ -32,3 +32,14 @@ FF=$(python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
 $FF -framerate 24 -i f3/%05d.jpg -i audio.wav -c:v libx264 -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest bi_studio_teaser.mp4
 ```
 All timing lives in the `T` object in `teaser.html`. The montage runs on the song's grid (`T.BAR`, `T.BEAT`).
+
+## Part 2: Import / Export (`sequel/`)
+This is a 36-second sequel. Another client, Olivia, wants the same supplier margin report fast. Mike answers "Don't worry, I gotchu 😎", then:
+1. **Export:** Import / Export, the four chips fill in, Build package gives `bi_studio_export.bistudio`.
+2. **Transfer:** the file card flies to Olivia's Odoo.
+3. **Import:** Upload, then Validate, Import, and the new dashboard appears.
+4. **Payoff:** "Done ✅", then "whoa." The music cuts out on that bubble.
+5. **Titles:** "No need to create the same report again and again.", then "BI Studio can help you.", "PORTOKO can help you." and the logo.
+
+The edit is locked to "Funkee Monkeee": video bar k equals song bar k, 2 s per bar.
+Build: `node renderS.js && python3 blurS.py && python3 audioS.py`, then encode `fS/` with `audioS.wav`.

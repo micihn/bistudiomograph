@@ -1,13 +1,18 @@
 # Credits and licenses
 
 ## Music
-**"Hazy After Hours"** by Alejandro Magaña (A. M.), [Mixkit](https://mixkit.co/free-stock-music/tag/technology/) (track 132), under the Mixkit Stock Music Free License. It allows commercial use and needs no attribution. The track is edited on its own bar grid (121 bpm) and not altered otherwise.
+- Part 1: **"Shoot the Devil Tonight"** by Michael Ramir C., [Mixkit](https://mixkit.co/free-stock-music/edm/) track 1119.
+- Part 2 (Import / Export): **"Funkee Monkeee"** by Michael Ramir C., [Mixkit](https://mixkit.co/free-stock-music/funk/) track 1140.
+
+Both are under the Mixkit Stock Music Free License (commercial use, no attribution needed). Each is edited on its own 120 bpm bar grid and not otherwise altered. They were picked to fit a French electro-house and disco-funk mood. Neither is Justice or uses any Justice material.
 
 ## Sound effects
 All from [Mixkit](https://mixkit.co/free-sound-effects/), under the Mixkit Sound Effects Free License (commercial use, no attribution needed).
 
 | Sound | Mixkit id |
 |---|---|
+| Modern click box check | 1120 |
+| Hard pop click | 2364 |
 | Natural ambience with flowing water and birds | 61 |
 | Fast sword hit in medieval battle | 2764 |
 | Sword slashes in battle | 2763 |
