@@ -1,28 +1,35 @@
 # BI Studio teaser (by PORTOKO)
 
-A ~55 s motion-graphics teaser for the BI Studio Odoo module, built as code:
+A 56-second teaser for the BI Studio Odoo module. It uses live-action footage, a desktop chat and real Odoo screens, with a soundtrack built only from real CC0 recordings.
 
-- `teaser.html` holds the whole film. `render(t)` draws any moment deterministically, and all timing lives in the `T` object.
-- `render.js` steps through the timeline at 30 fps in headless Chromium and pipes the frames to ffmpeg. It also writes `cues.json` (every keystroke, ping and cut).
-- `audio.py` synthesizes all sound (SFX, game bed, lo-fi chat bed, 120 bpm montage beat, end chord) from `cues.json`, so picture and sound stay in sync.
+## Story
+1. Real footage: hands on a gaming keyboard, then over the shoulder to the monitor. The green screen is replaced with a game, and a message banner arrives from Daniel (the client).
+2. Mike clicks it and the Messages window opens. Nothing zooms; the screen is shown flat and still.
+3. Daniel explains the report he wants. Mike types the honest answer (export everything and dump it into AI), with an intercut to real hands typing. He selects it all and deletes it.
+4. He types "Ofc, give me a couple hours 👍". Daniel replies first: "Actually we need it in an hour. ASAP please!!". Mike slowly backspaces.
+5. A light switch clicks and the screen cuts to black. "Build Odoo reports faster." then "with BI Studio", each on a soft piano chord.
+6. Real product flow, played as a screen recording with a cursor:
+   - group a question by vendor
+   - sort by Margin %
+   - show it as a bar chart
+   - sort a dashboard tile
+   - run the Vendor Margin Comparison report to PDF
+7. by PORTOKO
 
-## Story beats
-1. Mike is in a MOBA match, late at night.
-2. A client ping arrives. "Hey Mike, we need a new report."
-3. The ask: best supplier margin, average margin %, qty sold. "like… you get it???"
-4. Mike types the honest answer (export it all and dump it into AI), then deletes it.
-5. He types "Ofc, give me a couple hours". The client replies first: "Need it in an hour. ASAP please!!". The music tape-stops, and he slowly backspaces.
-6. Cut to black. "Build Odoo reports faster." / "with BI Studio"
-7. 120 bpm montage: dataset joins, then question builder, then real top-N sort, then chart types, then dashboard with a global filter, then a banded PDF/XLSX report, then real screenshots.
-8. "12 minutes later": "Done ✅". "wait… already?? 😳"
-9. by PORTOKO
+Every cut has its own small real sound (pen click, marble, glass tap, coin, switch), and every mouse click has a real click. The music is marimba, contrabass pizzicato and piano samples at 100 bpm. See CREDITS.md.
+
+## Files
+- `teaser.html`: all screen content and timing (`T`), plus the monitor texture (`renderTexture`).
+- `render.js`: renders HTML frames and monitor textures, and writes `cues.json`.
+- `comp.py`: adds the footage, tracks the green screen (`corners_raw.json`), keys it and composites the texture.
+- `audio.py`: sequences the real samples on the cue times, including keystrokes sliced from a real keyboard recording.
 
 ## Rebuild
 ```
-pip install numpy scipy imageio-ffmpeg
-FF=$(python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())") node render.js   # video_only.mp4 + cues.json
-python3 audio.py                                                                                  # audio.wav
-$FF -i video_only.mp4 -i audio.wav -c:v copy -c:a aac -b:a 192k -shortest bi_studio_teaser.mp4
-node stills.js 12 40.8                                                                            # preview single frames
+pip install numpy scipy pillow imageio-ffmpeg
+node render.js            # frames/ + tex/ + cues.json
+python3 comp.py           # footage + green-screen frames into frames/
+python3 audio.py          # audio.wav (expects ../snd/wav, ../vcsl, ../vsco; see CREDITS.md)
+FF=$(python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
+$FF -framerate 24 -i frames/%05d.jpg -i audio.wav -c:v libx264 -crf 17 -pix_fmt yuv420p -c:a aac -shortest bi_studio_teaser.mp4
 ```
-Fonts: Inter (SIL OFL). The game footage is an original stylized MOBA, not Dota assets.

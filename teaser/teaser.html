@@ -1,7 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <style>
-@font-face{font-family:Inter;src:url(fonts/inter-300.ttf);font-weight:300}
 @font-face{font-family:Inter;src:url(fonts/inter-400.ttf);font-weight:400}
 @font-face{font-family:Inter;src:url(fonts/inter-500.ttf);font-weight:500}
 @font-face{font-family:Inter;src:url(fonts/inter-600.ttf);font-weight:600}
@@ -10,671 +9,412 @@
 html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
 body{font-family:Inter,"Noto Color Emoji",sans-serif;-webkit-font-smoothing:antialiased;color:#1d1d1f}
 .emoji{font-family:"Noto Color Emoji"}
-#vp{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;background:#000}
-.layer{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:none}
+.layer{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;display:none}
 
-/* ---------- room / monitor ---------- */
-#S_room{background:radial-gradient(1200px 700px at 50% 42%,#1b2233 0%,#0b0e15 55%,#05060a 100%)}
-#cam{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
-#desk{position:absolute;left:-2000px;right:-2000px;top:1300px;height:1400px;background:linear-gradient(#11141c,#07080c)}
-#stand{position:absolute;left:840px;top:1100px;width:240px;height:190px;background:linear-gradient(90deg,#1b1e26,#2a2e38 50%,#1b1e26);clip-path:polygon(30% 0,70% 0,78% 100%,22% 100%)}
-#standbase{position:absolute;left:700px;top:1280px;width:520px;height:26px;border-radius:13px;background:linear-gradient(#2c303a,#15171d)}
-#monitor{position:absolute;left:-26px;top:-26px;width:1972px;height:1132px;border-radius:30px;background:#0d0e12;box-shadow:0 0 0 2px #25272e,0 60px 160px rgba(80,120,255,.18)}
-#screen{position:absolute;left:26px;top:26px;width:1920px;height:1080px;overflow:hidden;background:#000;border-radius:6px}
-#gameLayer{position:absolute;inset:0}
+/* ===== monitor texture (game + banner) ===== */
+#L_tex{background:#000}
 #game{position:absolute;inset:0}
-.hud{position:absolute;color:#e8e2d0;font-family:Inter}
+.hud{position:absolute;color:#e8e2d0}
 #hudTop{left:760px;top:0;width:400px;height:58px;background:linear-gradient(#101218ee,#0b0c10cc);clip-path:polygon(0 0,100% 0,90% 100%,10% 100%);display:flex;align-items:center;justify-content:center;gap:34px;font-weight:700;font-size:30px}
-#hudTop .clock{font-size:22px;font-weight:600;color:#d8d2c0;letter-spacing:.04em}
-#hudBot{left:560px;top:938px;width:800px;height:142px;background:linear-gradient(#171a22f2,#0c0d12f8);border-top:2px solid #3a3322;border-radius:18px 18px 0 0;display:flex;align-items:center;padding:0 22px;gap:18px}
-.portrait{width:104px;height:104px;border-radius:12px;background:radial-gradient(circle at 40% 35%,#8fe6ff,#2a6f9a 55%,#0e2233);box-shadow:inset 0 0 0 2px #6b5a33}
-.bars{display:flex;flex-direction:column;gap:6px;width:240px}
-.bar{height:22px;border-radius:4px;background:#222;overflow:hidden;position:relative;font-size:14px;font-weight:600;color:#fff}
-.bar i{position:absolute;left:0;top:0;bottom:0;display:block}
-.bar span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-shadow:0 1px 2px #000}
-.abil{display:flex;gap:10px}
-.ab{width:84px;height:84px;border-radius:10px;position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px #4a4029}
-.ab b{position:absolute;left:6px;top:4px;font-size:14px;color:#fff;text-shadow:0 1px 2px #000}
-.ab .cd{position:absolute;inset:0}
-.ab .cdt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff}
-#minimap{left:14px;top:810px;width:260px;height:260px;border:3px solid #3a3322;border-radius:8px;overflow:hidden;background:#1e2c19}
-#vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);pointer-events:none}
+#hudBot{left:560px;top:938px;width:800px;height:142px;background:linear-gradient(#171a22f2,#0c0d12f8);border-radius:18px 18px 0 0;display:flex;align-items:center;padding:0 22px;gap:14px}
+.ab{width:84px;height:84px;border-radius:10px;box-shadow:inset 0 0 0 2px #4a4029}
+#minimap{left:14px;top:810px;width:260px;height:260px;border:3px solid #3a3322;background:#1e2c19}
+#banner{position:absolute;left:1330px;top:24px;transform-origin:100% 0;width:560px;padding:20px 22px;border-radius:22px;background:rgba(236,236,240,.96);box-shadow:0 18px 50px rgba(0,0,0,.5);display:flex;gap:16px}
+#banner .ic{width:56px;height:56px;border-radius:13px;background:linear-gradient(#5ac8fa,#0a84ff);flex:none}
+#banner .a{font-size:17px;color:#6e6e73;display:flex;justify-content:space-between}
+#banner .w{font-size:22px;font-weight:600;margin-top:2px}
+#banner .x{font-size:21px;margin-top:2px}
 
-/* toast */
-#toast{position:absolute;left:1466px;top:26px;width:430px;padding:18px 20px;border-radius:22px;background:rgba(246,246,248,.94);box-shadow:0 20px 50px rgba(0,0,0,.45);display:flex;gap:16px;align-items:flex-start}
-#toast .ic{width:50px;height:50px;border-radius:12px;background:linear-gradient(#35d46a,#0c9c4a);flex:none;display:flex;align-items:center;justify-content:center}
-#toast .app{font-size:15px;color:#6e6e73;display:flex;justify-content:space-between;width:330px}
-#toast .who{font-size:19px;font-weight:600;margin-top:2px}
-#toast .txt{font-size:18px;color:#1d1d1f;margin-top:2px}
+/* ===== desktop chat ===== */
+#L_chat{background:#0d1020}
+#wall{position:absolute;inset:0;background:
+ radial-gradient(900px 700px at 18% 85%,#3a2a6b 0%,transparent 60%),
+ radial-gradient(1100px 800px at 85% 20%,#12345e 0%,transparent 60%),
+ radial-gradient(700px 600px at 60% 70%,#1d4a5a 0%,transparent 65%),
+ linear-gradient(135deg,#0b0d1c,#141a33)}
+#menubar{position:absolute;left:0;right:0;top:0;height:34px;background:rgba(30,30,40,.55);color:#f2f2f7;font-size:15px;display:flex;align-items:center;gap:26px;padding:0 22px}
+#menubar b{font-weight:600}
+#menubar .r{margin-left:auto}
+#win{position:absolute;left:250px;top:92px;width:1420px;height:940px;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.2);display:flex}
+#side{width:380px;flex:none;background:#f3f3f5;border-right:1px solid #dcdce0;padding-top:16px}
+.tl{display:flex;gap:9px;padding:4px 20px 18px}.tl i{width:14px;height:14px;border-radius:50%;display:block}
+.search{margin:0 16px 12px;height:36px;border-radius:9px;background:#e3e3e8;color:#8e8e93;font-size:16px;display:flex;align-items:center;padding:0 12px}
+.conv{display:flex;gap:14px;padding:12px 16px;margin:0 8px;border-radius:10px}
+.conv.act{background:#0a84ff;color:#fff}
+.conv .av{width:50px;height:50px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:18px}
+.conv .n{font-size:18px;font-weight:600;display:flex;justify-content:space-between}
+.conv .n span{font-size:14px;font-weight:400;opacity:.6}
+.conv .p{font-size:15px;opacity:.65;margin-top:3px;line-height:1.3;height:39px;overflow:hidden}
+#main{flex:1;display:flex;flex-direction:column}
+#hd{height:74px;flex:none;border-bottom:1px solid #e5e5ea;display:flex;align-items:center;justify-content:center;flex-direction:column}
+#hd .n{font-size:19px;font-weight:600}#hd .s{font-size:14px;color:#8e8e93;margin-top:2px}
+#msgs{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:10px 26px 10px;overflow:hidden}
+.mw{flex:none;overflow:hidden}
+.m{max-width:64%;font-size:23px;line-height:1.36;padding:11px 17px;border-radius:21px;margin:3px 0;width:fit-content}
+.m.them{background:#e9e9eb;color:#000}
+.m.me{background:#0a84ff;color:#fff;margin-left:auto}
+.day{text-align:center;font-size:14px;color:#8e8e93;margin:14px 0 8px}
+.typing{display:flex;gap:6px;padding:16px 18px}.typing i{width:10px;height:10px;border-radius:50%;background:#8e8e93;display:block}
+#inbar{flex:none;padding:12px 22px 18px;display:flex;align-items:flex-end;gap:12px}
+#infield{flex:1;border:1px solid #d1d1d6;border-radius:22px;padding:9px 18px;font-size:23px;line-height:1.36;min-height:48px;color:#000;word-wrap:break-word}
+#infield .ph{color:#b0b0b6}
+#infield .hl{background:#b3d7ff}
+#caret{display:inline-block;width:2px;height:27px;background:#0a84ff;vertical-align:-5px}
+#send{width:40px;height:40px;border-radius:50%;background:#0a84ff;flex:none;margin-bottom:4px}
 
-/* chat */
-#chat{position:absolute;left:500px;top:120px;width:920px;height:860px;border-radius:24px;background:#fff;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);display:flex;flex-direction:column;transform-origin:1680px 60px}
-#chat .hd{height:92px;flex:none;display:flex;align-items:center;gap:18px;padding:0 28px;border-bottom:1px solid #ececf0}
-.av{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#ffb86b,#f0643c);color:#fff;font-weight:600;font-size:21px;display:flex;align-items:center;justify-content:center}
-#chat .nm{font-size:24px;font-weight:600}
-#chat .st{font-size:17px;color:#0c9c4a;margin-top:2px}
-#chat .dots3{margin-left:auto;display:flex;gap:6px}
-#chat .dots3 i{width:7px;height:7px;border-radius:50%;background:#b0b0b8;display:block}
-#msgs{flex:1;background:#f4f5f7;display:flex;flex-direction:column;justify-content:flex-end;padding:18px 30px 12px;overflow:hidden}
-.mw{overflow:hidden;flex:none;padding:0 4px;margin:0 -4px}
-.m{max-width:74%;font-size:25px;line-height:1.42;padding:15px 22px;border-radius:24px;margin:6px 0;transform-origin:0 100%;width:fit-content}
-.m.them{background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);border-bottom-left-radius:8px}
-.m.me{background:#0e9352;color:#fff;margin-left:auto;border-bottom-right-radius:8px;transform-origin:100% 100%}
-.m .tm{display:block;font-size:14px;opacity:.55;margin-top:4px;text-align:right}
-.typing{display:flex;gap:7px;padding:20px 24px}
-.typing i{width:11px;height:11px;border-radius:50%;background:#9a9aa2;display:block}
-.divider{text-align:center;margin:14px 0}
-.divider span{display:inline-block;background:#e4e5ea;color:#55555c;font-size:17px;font-weight:500;padding:7px 18px;border-radius:20px}
-#inbar{flex:none;padding:16px 24px 22px;display:flex;align-items:flex-end;gap:16px;border-top:1px solid #ececf0}
-#infield{flex:1;background:#f1f2f5;border-radius:28px;padding:14px 24px;font-size:25px;line-height:1.42;min-height:64px;color:#1d1d1f;word-wrap:break-word}
-#infield .ph{color:#a1a1a8}
-#infield .hl{background:#b3d4fd}
-#caret{display:inline-block;width:2.5px;height:30px;background:#0e9352;vertical-align:-6px;margin-left:1px}
-#send{width:64px;height:64px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center}
-#cursor{position:absolute;left:0;top:0;width:34px;height:44px;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5))}
-#clickfx{position:absolute;width:60px;height:60px;border-radius:50%;border:3px solid #fff;pointer-events:none}
-
-/* ---------- black titles ---------- */
-#S_black{background:#000}
-.title{position:absolute;left:0;right:0;top:500px;text-align:center;color:#f5f5f7;font-size:42px;font-weight:500;letter-spacing:-.015em}
+/* ===== titles ===== */
+#L_black{background:#000}
+.title{position:absolute;left:0;right:0;top:512px;text-align:center;color:#f5f5f7;font-size:40px;font-weight:500;letter-spacing:-.01em}
 .title .dim{color:#86868b}
 
-/* ---------- montage ---------- */
-#S_mont{background:radial-gradient(1400px 900px at 50% 30%,#ffffff 0%,#f2f2f5 60%,#e8e8ed 100%)}
-.shot{position:absolute;inset:0;display:none}
-.cap{position:absolute;z-index:3;left:0;right:0;top:70px;text-align:center;font-size:48px;font-weight:600;letter-spacing:-.025em;color:#1d1d1f}
-.cap small{display:block;font-size:24px;font-weight:400;color:#6e6e73;letter-spacing:0;margin-top:8px}
-.camw{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
-.win{position:absolute;left:190px;top:280px;width:1540px;height:760px;border-radius:18px;background:#f9fafb;overflow:hidden;box-shadow:0 50px 100px -30px rgba(20,20,50,.35),0 0 0 1px rgba(0,0,0,.07)}
-.nav{height:54px;background:#71639e;color:#fff;display:flex;align-items:center;gap:30px;padding:0 22px;font-size:20px}
-.nav .grid{display:grid;grid-template-columns:repeat(3,6px);gap:3px}
-.nav .grid i{width:6px;height:6px;background:#fff;display:block;border-radius:1px}
-.nav .brand{font-size:23px}
-.nav .act{background:rgba(0,0,0,.14);padding:15px 12px}
-.pane{position:absolute;top:54px;bottom:0}
-.sec{font-size:15px;letter-spacing:.06em;color:#4b4b52;font-weight:500;margin:22px 0 10px}
-.sel{height:44px;border:1px solid #d8d9de;border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 14px;font-size:18px;justify-content:space-between}
-.chev{width:10px;height:10px;border-right:2px solid #333;border-bottom:2px solid #333;transform:rotate(45deg) translate(-3px,-3px)}
-.chip{display:inline-flex;align-items:center;gap:8px;font-size:17px;padding:5px 12px;border-radius:14px}
-.row{display:flex;align-items:center}
-.tbl{position:absolute;font-size:20px}
-.tr{position:absolute;left:0;right:0;height:58px;background:#f9fafb;border-bottom:1px solid #e3e4e8;display:flex;align-items:center;padding:0 16px}
-.th{font-weight:600;color:#222;border-bottom:2px solid #d6d7dc}
-.num{font-variant-numeric:tabular-nums;text-align:right}
-.panel{position:absolute;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.05)}
-.tile{position:absolute;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.05);padding:18px 22px}
-.tile h4{font-size:17px;font-weight:600;color:#333}
-.band{position:absolute;left:0;right:0;border-bottom:1px dashed #c9c9d2;display:flex}
-.band .lbl{width:170px;flex:none;background:#efeff4;font-size:14px;font-weight:600;color:#5a5a66;padding:8px 12px;border-right:1px solid #dcdce4}
-.band .area{position:relative;flex:1}
-.el{position:absolute;border:1.5px solid #9d8fd0;background:rgba(113,99,158,.07);border-radius:4px;font-size:15px;color:#3d3560;padding:4px 8px;white-space:nowrap}
-.paper{position:absolute;background:#fff;box-shadow:0 30px 70px -20px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06);border-radius:4px;padding:44px 50px;font-size:15px}
-.shotimg{position:absolute;border-radius:14px;overflow:hidden;box-shadow:0 50px 100px -30px rgba(20,20,50,.4),0 0 0 1px rgba(0,0,0,.08);background:#fff}
-.shotimg img{display:block;width:100%}
+/* ===== odoo ===== */
+.odoo{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#f8f9fa;color:#374151;overflow:hidden;transform-origin:0 0}
+.nav{height:64px;background:#71639e;color:#fff;display:flex;align-items:center;padding:0 24px;font-size:21px;gap:0}
+.nav .gi{display:grid;grid-template-columns:repeat(3,7px);gap:3px;margin-right:22px}.nav .gi i{width:7px;height:7px;background:#fff;display:block;border-radius:1px}
+.nav .br{font-size:25px;margin-right:30px}
+.nav .it{padding:0 15px;height:64px;display:flex;align-items:center}
+.nav .it.on{background:rgba(0,0,0,.1)}
+.nav .rt{margin-left:auto;display:flex;align-items:center;gap:26px}
+.nav .avt{width:38px;height:38px;border-radius:5px;background:#7b3fc4;display:flex;align-items:center;justify-content:center;font-size:20px}
+.btn{height:50px;padding:0 18px;border-radius:5px;display:inline-flex;align-items:center;font-size:21px;font-weight:500}
+.bp{background:#71639e;color:#fff}.bs{background:#e7e9ed;color:#1f2937}.bd{background:#e7e9ed;color:#9ca3af}
+.lbl{font-size:18px;letter-spacing:.02em;color:#374151;margin:30px 0 12px}
+.sel{height:46px;border:1px solid #d8dadd;border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:20px;color:#374151}
+.chv{width:11px;height:11px;border-right:2px solid #374151;border-bottom:2px solid #374151;transform:rotate(45deg);margin-top:-6px;flex:none}
+.x{color:#6b7280;font-size:20px;margin-left:auto}
+.dd{position:absolute;background:#fff;border:1px solid #c9ccd1;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,.15);font-size:20px;z-index:5}
+.dd div{padding:9px 14px}
+.dd .hv{background:#1a73e8;color:#fff}
+.tr{position:absolute;left:0;right:0;height:57px;border-bottom:1px solid #dee2e6;display:flex;align-items:center;font-size:21px;padding:0 10px}
+.th{font-weight:600;color:#1f2937}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.icb{width:48px;height:48px;border:1px solid #d8dadd;border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:center}
+.icb.on{background:#71639e;border-color:#71639e}
+.tile{position:absolute;background:transparent}
+.tile h4{font-size:19px;font-weight:600;color:#374151}
+.minisel{position:absolute;top:-6px;right:44px;height:36px;border:1px solid #d8dadd;border-radius:4px;background:#fff;font-size:16px;display:flex;align-items:center;gap:30px;padding:0 12px}
+#pdfv{position:absolute;inset:0;background:#525659;display:none}
+#pdfbar{height:56px;background:#323639;color:#fff;font-size:18px;display:flex;align-items:center;padding:0 24px}
+#page{position:absolute;left:560px;top:90px;width:800px;height:1130px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.4);padding:70px 76px;font-size:17px;color:#222}
 
-/* ---------- end ---------- */
-#S_end{background:#fff}
-#by{position:absolute;left:0;right:0;top:404px;text-align:center;font-size:30px;color:#86868b;font-weight:400}
-#logoWrap{position:absolute;left:560px;top:450px;width:800px;height:176px;overflow:hidden}
-#logoWrap img{width:800px;display:block}
-#endSub{position:absolute;left:0;right:0;top:690px;text-align:center;font-size:24px;color:#6e6e73}
-#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#cur{position:absolute;left:0;top:0;width:30px;height:40px;z-index:50;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}
+
+/* ===== end ===== */
+#L_end{background:#fff}
+#by{position:absolute;left:0;right:0;top:410px;text-align:center;font-size:28px;color:#86868b}
+#logo{position:absolute;left:600px;top:456px;width:720px}
 </style></head>
 <body>
-<div id="vp">
 
-<!-- ================= ROOM / SCREEN ================= -->
-<div class="layer" id="S_room">
- <div id="cam">
-  <div id="desk"></div><div id="stand"></div><div id="standbase"></div>
-  <div id="monitor"><div id="screen">
-    <div id="gameLayer">
-      <canvas id="game" width="1920" height="1080"></canvas>
-      <div id="vignette"></div>
-      <div class="hud" id="hudTop"><span style="color:#7fd35b">23</span><span class="clock" id="clock">31:42</span><span style="color:#e0584a">17</span></div>
-      <div class="hud" id="minimap"><canvas id="mini" width="260" height="260"></canvas></div>
-      <div class="hud" id="hudBot">
-        <div class="portrait"></div>
-        <div class="bars">
-          <div class="bar"><i id="hpFill" style="background:linear-gradient(#5fd35a,#2f9a2c);width:82%"></i><span id="hpTxt">1804 / 2200</span></div>
-          <div class="bar"><i id="mpFill" style="background:linear-gradient(#5aa8ff,#2a62d0);width:64%"></i><span id="mpTxt">702 / 1100</span></div>
-        </div>
-        <div class="abil" id="abil"></div>
-      </div>
+<!-- monitor texture -->
+<div class="layer" id="L_tex">
+  <canvas id="game" width="1920" height="1080"></canvas>
+  <div class="hud" id="hudTop"><span style="color:#7fd35b">23</span><span id="clock" style="font-size:22px">31:42</span><span style="color:#e0584a">17</span></div>
+  
+  <div class="hud" id="hudBot"><div class="ab" style="width:104px;height:104px;background:radial-gradient(circle at 40% 35%,#8fe6ff,#2a6f9a 55%,#0e2233)"></div>
+    <div style="width:230px"><div style="height:22px;background:#2f9a2c;border-radius:4px;width:82%"></div><div style="height:22px;background:#2a62d0;border-radius:4px;width:60%;margin-top:6px"></div></div>
+    <div class="ab" style="background:radial-gradient(#3b8fe0,#0b2c55)"></div><div class="ab" style="background:radial-gradient(#e0a33b,#553108)"></div><div class="ab" style="background:radial-gradient(#8a5ae0,#261055)"></div><div class="ab" style="background:radial-gradient(#e04b3b,#550f0b)"></div></div>
+  <div id="banner"><div class="ic"></div><div style="flex:1"><div class="a"><span>Messages</span><span>now</span></div><div class="w">Daniel Reed</div><div class="x">Hey Mike <span class="emoji">👋</span> we need a new report.</div></div></div>
+</div>
+
+<!-- desktop chat -->
+<div class="layer" id="L_chat">
+  <div id="wall"></div>
+  <div id="menubar"><b>Messages</b><span>File</span><span>Edit</span><span>View</span><span>Conversation</span><span>Window</span><span class="r">Sat 26 Sep&nbsp;&nbsp;11:47 PM</span></div>
+  <div id="win">
+    <div id="side">
+      <div class="tl"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+      <div class="search">Search</div>
+      <div class="conv act"><div class="av" style="background:linear-gradient(#a0a8b8,#7c8494)">DR</div><div style="flex:1;min-width:0"><div class="n">Daniel Reed <span id="dTime">11:47 PM</span></div><div class="p" id="dPrev">Hey Mike 👋 we need a new report.</div></div></div>
+      <div class="conv"><div class="av" style="background:linear-gradient(#a0a8b8,#7c8494)">SL</div><div style="flex:1;min-width:0"><div class="n">Sarah Lee <span>9:12 PM</span></div><div class="p">Deploy looks good on staging, thanks!</div></div></div>
+      <div class="conv"><div class="av" style="background:linear-gradient(#a0a8b8,#7c8494)">DT</div><div style="flex:1;min-width:0"><div class="n">Dev Team <span>Yesterday</span></div><div class="p">Alex: who broke the invoice sequence 😅</div></div></div>
+      <div class="conv"><div class="av" style="background:linear-gradient(#a0a8b8,#7c8494)">JM</div><div style="flex:1;min-width:0"><div class="n">James Miller <span>Thursday</span></div><div class="p">Invoice received, paying tomorrow.</div></div></div>
+      <div class="conv"><div class="av" style="background:linear-gradient(#a0a8b8,#7c8494)">MO</div><div style="flex:1;min-width:0"><div class="n">Mom <span>Wednesday</span></div><div class="p">Did you eat already?</div></div></div>
     </div>
-    <div id="toast">
-      <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24"><path fill="#fff" d="M12 3C6.5 3 2 6.6 2 11c0 2.4 1.3 4.6 3.5 6.1L5 21l4-2.2c1 .3 2 .4 3 .4 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg></div>
-      <div><div class="app"><span>Messages</span><span>now</span></div>
-      <div class="who">Pak Hendra</div>
-      <div class="txt">Hey Mike <span class="emoji">👋</span> we need a new report.</div></div>
-    </div>
-    <div id="chat">
-      <div class="hd"><div class="av">PH</div><div><div class="nm">Pak Hendra</div><div class="st" id="status">Client · online</div></div>
-        <div class="dots3"><i></i><i></i><i></i></div></div>
+    <div id="main">
+      <div id="hd"><div class="n">Daniel Reed</div><div class="s">Client</div></div>
       <div id="msgs">
-        <div class="mw" id="w1"><div class="m them" id="m1">Hey Mike <span class="emoji">👋</span> we need a new report.</div></div>
-        <div class="mw" id="wT1"><div class="m them typing" id="mT1"><i></i><i></i><i></i></div></div>
-        <div class="mw" id="w2"><div class="m them" id="m2">We want to know which supplier gives us the best margin, based on our past sales. So the report lists every supplier, their average margin % on the products we sell, and how many we've sold… like… you get it???</div></div>
-        <div class="mw" id="wT2"><div class="m them typing" id="mT2"><i></i><i></i><i></i></div></div>
-        <div class="mw" id="w3"><div class="m them" id="m3">Need it in an hour. ASAP please!! <span class="emoji">🙏</span></div></div>
-        <div class="mw" id="wD"><div class="divider"><span>12 minutes later</span></div></div>
-        <div class="mw" id="w4"><div class="m me" id="m4">Done <span class="emoji">✅</span> It's in BI Studio → Reports.</div></div>
-        <div class="mw" id="wT3"><div class="m them typing" id="mT3"><i></i><i></i><i></i></div></div>
-        <div class="mw" id="w5"><div class="m them" id="m5">wait… already?? <span class="emoji">😳</span></div></div>
+        <div class="day">Yesterday 4:12 PM</div>
+        <div class="m them">Thanks for fixing the invoice issue <span class="emoji">🙏</span></div>
+        <div class="m me">No problem, it's live now.</div>
+        <div class="day">Today 11:47 PM</div>
+        <div class="m them">Hey Mike <span class="emoji">👋</span> we need a new report.</div>
+        <div class="mw" id="wT1"><div class="m them typing"><i></i><i></i><i></i></div></div>
+        <div class="mw" id="w2"><div class="m them">We want to know which supplier gives us the best margin, based on our past sales. So the report should list every supplier, their average margin % on the products we sell, and how many we've sold… like… you get it???</div></div>
+        <div class="mw" id="wT2"><div class="m them typing"><i></i><i></i><i></i></div></div>
+        <div class="mw" id="w3"><div class="m them">Actually we need it in an hour. ASAP please!! <span class="emoji">🙏</span></div></div>
       </div>
-      <div id="inbar"><div id="infield"></div>
-        <div id="send"><svg width="30" height="30" viewBox="0 0 24 24"><path fill="#fff" d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></div></div>
+      <div id="inbar"><div id="infield"></div><div id="send"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M20 29V12M13 18l7-7 7 7" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     </div>
-    <div id="clickfx"></div>
-    <svg id="cursor" viewBox="0 0 34 44"><path d="M3 2 L3 34 L11 26.5 L16.5 39 L22 36.5 L16.8 24.5 L28 24.5 Z" fill="#fff" stroke="#000" stroke-width="2.2" stroke-linejoin="round"/></svg>
-  </div></div>
- </div>
+  </div>
 </div>
 
-<!-- ================= BLACK TITLES ================= -->
-<div class="layer" id="S_black">
+<!-- titles -->
+<div class="layer" id="L_black">
   <div class="title" id="t1">Build Odoo reports faster.</div>
-  <div class="title" id="t2"><span class="dim">with</span> <b style="font-weight:600">BI Studio</b></div>
+  <div class="title" id="t2"><span class="dim">with</span> BI Studio</div>
 </div>
 
-<!-- ================= MONTAGE ================= -->
-<div class="layer" id="S_mont">
-  <!-- M1 dataset builder -->
-  <div class="shot" id="M1"><div class="cap" id="c1">Join any Odoo model.<small>Drag fields, name them in plain words. No SQL.</small></div>
-   <div class="camw" id="k1"><div class="win">
-    <div class="nav"><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="brand">BI Studio</span><span>Ask a Question</span><span>Reports</span><span class="act">Build</span></div>
-    <div class="pane" style="left:0;width:470px;padding:10px 26px;border-right:1px solid #e3e4e8;background:#fff">
-      <div class="row" style="justify-content:space-between"><div class="sec">TABLES</div><div class="chip" style="background:#e9e9ee;border-radius:6px;font-size:15px">+ Add join</div></div>
-      <div id="tables"></div>
-      <div class="sec" style="margin-top:26px">AVAILABLE FIELDS</div>
-      <div class="sel" style="color:#9a9aa2;height:40px;font-size:16px">Search fields...</div>
-      <div id="fields" style="margin-top:8px"></div>
-    </div>
-    <div class="pane" style="left:470px;right:0;padding:10px 34px">
-      <div class="row" style="justify-content:space-between"><div class="sec">DATASET COLUMNS (<span id="colN">0</span>)</div>
-      <div class="chip" id="fanBadge" style="background:#ffe08a;color:#6b4e00;font-size:15px;font-weight:600">Contains a fan-out join</div></div>
-      <div id="shelf" style="position:relative"></div>
-    </div>
-   </div></div></div>
+<!-- odoo: question builder -->
+<div class="layer" id="L_q"><div class="odoo" id="oq">
+  <div class="nav"><div class="gi"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="br">BI Studio</span><span class="it on">Ask a Question</span><span class="it">Reports</span><span class="it">Build</span>
+    <div class="rt"><span>My Company</span><div class="avt">M</div></div></div>
+  <div style="position:absolute;left:40px;top:108px;font-size:32px;color:#9aa0a6">Name this question...</div>
+  <div style="position:absolute;right:30px;top:100px;display:flex;gap:12px"><div class="btn" style="background:#fff;border:1px solid #e5e7eb;font-size:26px">‹</div><div class="btn bp">Save</div><div class="btn bd">See Data</div><div class="btn bs">Export</div></div>
+  <div style="position:absolute;left:26px;top:170px;width:450px">
+    <div class="lbl">DATA SOURCE</div>
+    <div class="sel">Vendor Margin (compare, do not total)<div class="chv"></div></div>
+    <div style="font-size:18px;color:#6b7280;line-height:1.55;margin-top:10px">Fan-out dataset: a product with several vendors repeats its sold lines once per vendor. Use it to compare vendors against each other.</div>
+    <div class="lbl">MEASURE</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="sel" style="width:210px">Average<div class="chv"></div></div><span style="font-size:21px">Margin %</span><span class="x">✖</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div class="sel" style="width:210px">Sum<div class="chv"></div></div><span style="font-size:21px">Qty Sold</span><span class="x">✖</span></div>
+    <div class="sel">Add a measure...<div class="chv"></div></div>
+    <div class="lbl">GROUPED BY</div>
+    <div id="grpChip" style="display:flex;font-size:21px;padding:4px 10px 12px">Vendor<span class="x">✖</span></div>
+    <div class="sel" id="grpSel">Add a grouping...<div class="chv"></div></div>
+    <div class="lbl" style="display:flex;justify-content:space-between">ONLY INCLUDE<span style="color:#71639e;font-size:21px">+ add</span></div>
+    <div class="lbl">SORT BY</div>
+    <div style="display:flex;gap:10px"><div class="sel" id="sortSel" style="flex:1">Default order<div class="chv"></div></div><div class="icb">⇅</div></div>
+    <div class="lbl">SHOW AS</div>
+    <div style="display:flex;gap:8px" id="showas"></div>
+  </div>
+  <div id="qright" style="position:absolute;left:540px;right:40px;top:200px;height:820px">
+    <div class="tr th" style="top:0"><span style="flex:1">Vendor <span style="color:#9aa0a6">⇕</span></span><span class="num" id="hMargin" style="width:260px">Margin %</span><span class="num" style="width:220px">Qty Sold</span></div>
+    <div id="rows"></div>
+    <div id="chart" style="position:absolute;left:0;right:0;top:10px;height:760px;display:none"></div>
+  </div>
+  <div class="dd" id="grpDD" style="left:26px;top:0;width:450px;display:none"></div>
+</div></div>
 
-  <!-- M2/M3 question builder -->
-  <div class="shot" id="M2"><div class="cap" id="c2">Ask in business terms.<small>Pick a measure, group it, done.</small></div>
-   <div class="camw" id="k2"><div class="win">
-    <div class="nav"><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="brand">BI Studio</span><span class="act">Ask a Question</span><span>Reports</span><span>Build</span></div>
-    <div class="pane" style="left:0;width:450px;padding:6px 26px;background:#f6f7f9;border-right:1px solid #e3e4e8">
-      <div style="font-size:30px;color:#1d1d1f;margin:16px 0 4px;font-weight:500" id="qname">Best margin by supplier</div>
-      <div class="sec">DATA SOURCE</div><div class="sel">[Template] Vendor Margin<div class="chev"></div></div>
-      <div class="sec">MEASURE</div>
-      <div class="row q1" style="gap:10px;margin-bottom:10px"><div class="sel" style="width:170px">Average<div class="chev"></div></div><span style="font-size:19px">Margin %</span></div>
-      <div class="row q2" style="gap:10px"><div class="sel" style="width:170px">Sum<div class="chev"></div></div><span style="font-size:19px">Qty Sold</span></div>
-      <div class="sec">GROUPED BY</div><div class="q3" style="font-size:20px;padding:6px 10px">Vendor</div>
-      <div class="sec">SORT BY</div><div class="sel q4" id="sortSel">Default order<div class="chev"></div></div>
-      <div class="sec">SHOW AS</div><div class="row" id="showAs" style="gap:8px"></div>
-    </div>
-    <div class="pane" style="left:450px;right:0;padding:26px 40px">
-      <div class="tbl" id="qtbl" style="left:40px;right:40px;top:26px;height:560px"></div>
-      <div id="qchart" style="position:absolute;left:40px;right:40px;top:40px;height:620px"></div>
-    </div>
-   </div></div></div>
+<!-- odoo: dashboard -->
+<div class="layer" id="L_d"><div class="odoo">
+  <div class="nav"><div class="gi"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="br">BI Studio</span><span class="it">Ask a Question</span><span class="it on">Reports</span><span class="it">Build</span>
+    <div class="rt"><span>My Company</span><div class="avt">M</div></div></div>
+  <div style="position:absolute;left:30px;top:92px;font-size:30px;color:#1f2937">Margin Analysis</div>
+  <div style="position:absolute;right:30px;top:88px;display:flex;gap:10px"><div class="btn bs" style="height:44px;font-size:18px">⟳ Refresh</div><div class="btn bs" style="height:44px;font-size:18px">Export</div></div>
+  <div id="tiles"></div>
+  <div class="dd" id="tileDD" style="display:none;width:300px"></div>
+</div></div>
 
-  <!-- M5 dashboard -->
-  <div class="shot" id="M5"><div class="cap" id="c5">Dashboards, in minutes.<small>One filter drives every tile.</small></div>
-   <div class="camw" id="k5"><div class="win">
-    <div class="nav"><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="brand">BI Studio</span><span>Ask a Question</span><span class="act">Reports</span><span>Build</span></div>
-    <div style="position:absolute;left:30px;top:74px;font-size:28px;font-weight:500">Vendor Margin</div>
-    <div class="row" style="position:absolute;left:30px;top:124px;gap:14px;font-size:17px;color:#555" id="gfilters"></div>
-    <div id="tiles"></div>
-   </div></div></div>
+<!-- odoo: reports list + pdf -->
+<div class="layer" id="L_r"><div class="odoo">
+  <div class="nav"><div class="gi"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="br">BI Studio</span><span class="it">Ask a Question</span><span class="it">Reports</span><span class="it on">Build</span>
+    <div class="rt"><span>My Company</span><div class="avt">M</div></div></div>
+  <div style="position:absolute;left:0;right:0;top:64px;height:76px;border-bottom:1px solid #dee2e6;display:flex;align-items:center;padding:0 30px;gap:14px;background:#fff"><div class="btn bp" style="height:44px">New</div><span style="font-size:24px">Reports</span>
+    <div style="margin-left:360px;width:640px;height:44px;border:1px solid #d8dadd;border-radius:4px;color:#9aa0a6;display:flex;align-items:center;padding:0 16px;font-size:19px">Search...</div><span style="margin-left:auto;font-size:18px">1-5 / 5</span></div>
+  <div id="rlist" style="position:absolute;left:0;right:0;top:140px;background:#fff"></div>
+  <div id="pdfv"><div id="pdfbar">Vendor Margin Comparison.pdf<span style="margin-left:auto;opacity:.7">1 / 1</span></div><div id="page"></div></div>
+</div></div>
 
-  <!-- M6 report designer -->
-  <div class="shot" id="M6"><div class="cap" id="c6">Print-ready reports.<small>Groups, subtotals, PDF and Excel from the same numbers.</small></div>
-   <div class="camw" id="k6"><div class="win">
-    <div class="nav"><div class="grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="brand">BI Studio</span><span>Ask a Question</span><span>Reports</span><span class="act">Build</span></div>
-    <div style="position:absolute;left:30px;top:72px;font-size:24px;font-weight:500">Report Designer <span style="color:#86868b;font-weight:400">· Vendor Margin Comparison</span></div>
-    <div id="bands" style="position:absolute;left:30px;top:124px;width:960px;height:610px;background:#fff;border:1px solid #e0e0e6;border-radius:8px;overflow:hidden"></div>
-    <div class="paper" id="paper" style="left:1030px;top:92px;width:470px;height:636px"></div>
-    <div class="row" id="outChips" style="position:absolute;left:1070px;top:664px;gap:12px"></div>
-   </div></div></div>
+<!-- end -->
+<div class="layer" id="L_end"><div id="by">by</div><img id="logo" src="assets/1.png"></div>
 
-  <!-- M7 real screenshots -->
-  <div class="shot" id="M7"><div class="cap" id="c7">Built for Odoo 18.<small>&nbsp;</small></div>
-    <div class="camw" id="k7"><div id="shots"></div></div></div>
-</div>
-
-<!-- ================= END ================= -->
-<div class="layer" id="S_end">
-  <div id="by">by</div>
-  <div id="logoWrap"><img src="assets/1.png"></div>
-  <div id="endSub">BI Studio for Odoo</div>
-</div>
-<div id="flash"></div>
-</div>
+<svg id="cur" viewBox="0 0 30 40" style="display:none"><path d="M3 2 L3 29 L9.5 23 L14 33.5 L18.5 31.5 L14 21.5 L23 21.5 Z" fill="#000" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
 
 <script>
-// ============ helpers ============
 const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const lerp=(a,b,p)=>a+(b-a)*p;
-const E={
- lin:x=>x,
- out2:x=>1-(1-x)*(1-x),
- out3:x=>1-Math.pow(1-x,3),
- out5:x=>1-Math.pow(1-x,5),
- in3:x=>x*x*x,
- io3:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,
- io5:x=>x<.5?16*x**5:1-Math.pow(-2*x+2,5)/2,
- back:x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)},
- expo:x=>x===1?1:1-Math.pow(2,-10*x),
-};
+const E={out3:x=>1-Math.pow(1-x,3),io3:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,lin:x=>x,io2:x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
 const P=(t,a,b,e=E.out3)=>e(clamp((t-a)/(b-a)));
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function show(el,on){el.style.display=on?'block':'none'}
-const CUES=[]; const cue=(t,s,v=1)=>CUES.push({t:+t.toFixed(4),s,v});
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-function emo(s){return esc(s).replace(/(\p{Extended_Pictographic}️?)/gu,'<span class="emoji">$1</span>')}
+const emo=s=>esc(s).replace(/(\p{Extended_Pictographic}️?)/gu,'<span class="emoji">$1</span>');
+const CUES=[];const cue=(t,s,v=1)=>CUES.push({t:+t.toFixed(4),s,v});
+const show=(id,on)=>{$(id).style.display=on?'block':'none'};
 
-// typing schedule
-function typeSched(text,t0,cps,seed,frantic=false){
-  const r=rng(seed),ch=Array.from(text),out=[];let t=t0;
-  for(let i=0;i<ch.length;i++){const c=ch[i];
-    let d=(1/cps)*(0.5+r()*1.0);
-    if(frantic&&'?!'.includes(c))d*=0.45;
-    if(c===' '&&r()<.18)d+=.07;
-    if(',.'.includes(ch[i-1]||''))d+=.14;
-    t+=d;out.push(t);}
-  return out;}
-const countAt=(times,t)=>{let n=0;for(const x of times)if(x<=t)n++;return n};
+function typeSched(text,t0,cps,seed){const r=rng(seed),ch=Array.from(text),out=[];let t=t0;
+  for(let i=0;i<ch.length;i++){let d=(1/cps)*(0.55+r()*0.9);if(ch[i]===' '&&r()<.2)d+=.08;if(',.'.includes(ch[i-1]||''))d+=.16;if('?!'.includes(ch[i])&&'?!'.includes(ch[i-1]||''))d*=.5;t+=d;out.push(t)}return out}
+const countAt=(a,t)=>{let n=0;for(const x of a)if(x<=t)n++;return n};
 
-// ============ TIMELINE ============
-const T={};
-T.toast=4.6; T.click=6.25; T.open=6.35;
-T.typ1=7.25; T.b1=8.0; T.typ2=8.7; T.b2=10.1;
+// ================= TIMELINE (seconds, 24 fps) =================
+const T={FPS:24};
+T.A=0; T.B=1.75; T.C=3.25;             // footage: hands close, hands overhead, monitor comp
+T.banner=5.0; T.D=8.2; T.click=T.D-.04;    // chat on desktop
+T.typ1=T.D+1.0; T.b2=T.D+2.6;
 const TXT1="Yes but why don't you just export all your transactions and margins, export all your product data, and dump it ALL into AI?!?!?!?!";
 const TXT2="Ofc, give me a couple hours 👍";
-const ty1=typeSched(TXT1,14.7,27,7,true); T.ty1end=ty1[ty1.length-1];
-T.selAll=T.ty1end+1.35; T.del1=T.selAll+.28;
-const ty2=typeSched(TXT2,T.del1+.55,15,11); T.ty2end=ty2[ty2.length-1];
-T.typ3=T.ty2end+.25; T.b3=T.typ3+.75;
-// slow, sad backspace
+const ty1=typeSched(TXT1,T.b2+4.4,24,7); T.ty1end=ty1[ty1.length-1];
+T.Ein=ty1[40]; T.Eout=T.Ein+1.25;       // intercut: hands typing (footage)
+T.selAll=T.ty1end+1.4; T.del=T.selAll+.35;
+const ty2=typeSched(TXT2,T.del+.7,13,11); T.ty2end=ty2[ty2.length-1];
+T.typ2=T.ty2end+.3; T.b3=T.typ2+1.0;
 const N2=Array.from(TXT2).length;
-T.bs0=T.b3+1.45; const bs=[];{let t=T.bs0;const r=rng(5);for(let i=0;i<N2;i++){t+=0.055+r()*0.03+(i<3?0.12:0);bs.push(t)}}
+T.bs0=T.b3+1.6;const bs=[];{let t=T.bs0;const r=rng(5);for(let i=0;i<N2;i++){t+=.07+r()*.05;bs.push(t)}}
 T.bsEnd=bs[bs.length-1];
-T.cut=T.bsEnd+1.5;                 // hard cut to black
-T.title1=T.cut+.7; T.title1out=T.title1+2.3;
-T.title2=T.title1out+.55; T.title2out=T.title2+1.65;
-T.mont=T.title2out+.25;             // beat 0 of montage
-const BEAT=0.5; const B=b=>T.mont+b*BEAT;
-T.m1=B(0);T.m2=B(3);T.m3=B(6);T.m4=B(8);T.m5=B(11);T.m6=B(15);T.m7=B(19);T.mEnd=B(23);
-T.call=T.mEnd; T.b4=T.call+.9; T.typ5=T.b4+.55; T.b5=T.typ5+.75; T.end=T.b5+1.25;
-T.total=T.end+4.3;
+T.black=T.bsEnd+1.4;
+T.t1=T.black+.8; T.t1o=T.t1+2.2; T.t2=T.t1o+.5; T.t2o=T.t2+1.7;
+const BEAT=0.6; T.G=T.t2o+.3; const Bt=b=>T.G+b*BEAT;
+T.p1=Bt(0);T.p2=Bt(6);T.p3=Bt(10);T.p4=Bt(14);T.p5=Bt(18);T.H=Bt(22);
+T.total=T.H+4.2;
 window.T=T;
 
-// ============ build static bits ============
-// abilities
-(function(){const cols=[['#3b8fe0','#0b2c55','Q'],['#e0a33b','#553108','W'],['#8a5ae0','#261055','E'],['#e04b3b','#550f0b','R']];
- $('abil').innerHTML=cols.map((c,i)=>`<div class="ab" style="background:radial-gradient(circle at 50% 40%,${c[0]},${c[1]})"><div class="cd" id="cd${i}"></div><div class="cdt" id="cdt${i}"></div><b>${c[2]}</b></div>`).join('')+
- '<div style="display:grid;grid-template-columns:repeat(3,40px);gap:5px;margin-left:10px">'+Array.from({length:6},(_,i)=>`<div style="width:40px;height:40px;border-radius:5px;background:${['#6b5a33','#35506b','#5e2f2f','#2f5e3c','#4a4a4a','#5c4a7a'][i]};box-shadow:inset 0 0 0 1px #0008"></div>`).join('')+'</div>';})();
-
-// game terrain (map coords)
-const MAP={w:2800,h:1700};
+// ================= monitor texture =================
+const MAP={w:2800,h:1700},lanePts=[[150,1600],[2650,120]];
+const laneAt=s=>[lerp(lanePts[0][0],lanePts[1][0],s),lerp(lanePts[0][1],lanePts[1][1],s)];
+const riverY=x=>250+x*.5+Math.sin(x/260)*60;
 const terrain=document.createElement('canvas');terrain.width=MAP.w;terrain.height=MAP.h;
-const lanePts=[[150,1600],[2650,120]];
-function laneAt(s){return[lerp(lanePts[0][0],lanePts[1][0],s),lerp(lanePts[0][1],lanePts[1][1],s)]}
-function riverY(x){return 250+x*0.5+Math.sin(x/260)*60}
-(function(){const g=terrain.getContext('2d'),r=rng(42);
- let gr=g.createLinearGradient(0,0,MAP.w,MAP.h);gr.addColorStop(0,'#33452a');gr.addColorStop(1,'#2a3524');g.fillStyle=gr;g.fillRect(0,0,MAP.w,MAP.h);
- for(let i=0;i<5000;i++){g.fillStyle=`rgba(${60+r()*40|0},${80+r()*50|0},${40+r()*30|0},${.05+r()*.08})`;g.beginPath();g.ellipse(r()*MAP.w,r()*MAP.h,6+r()*40,4+r()*22,r()*3,0,7);g.fill()}
- // river
- g.lineCap='round';
- const river=(w,c)=>{g.strokeStyle=c;g.lineWidth=w;g.beginPath();for(let x=-50;x<=MAP.w+50;x+=20){const y=riverY(x);x<0?g.moveTo(x,y):g.lineTo(x,y)}g.stroke()};
- river(260,'#5b5238');river(200,'#2f5563');river(120,'#346473');
- for(let i=0;i<260;i++){const x=r()*MAP.w,y=riverY(x)+(r()-.5)*140;g.strokeStyle='rgba(170,220,235,.10)';g.lineWidth=2;g.beginPath();g.moveTo(x,y);g.lineTo(x+20+r()*30,y+8);g.stroke()}
- // lane
- g.strokeStyle='#6d5b40';g.lineWidth=130;g.beginPath();g.moveTo(...lanePts[0]);g.lineTo(...lanePts[1]);g.stroke();
- g.strokeStyle='#7d6a4b';g.lineWidth=86;g.stroke();
- for(let i=0;i<900;i++){const s=r(),p=laneAt(s);g.fillStyle=`rgba(${120+r()*40|0},${100+r()*30|0},${70},${.18})`;g.beginPath();g.arc(p[0]+(r()-.5)*110,p[1]+(r()-.5)*110,2+r()*6,0,7);g.fill()}
- // trees
+(function(){const g=terrain.getContext('2d'),r=rng(42);let gr=g.createLinearGradient(0,0,MAP.w,MAP.h);gr.addColorStop(0,'#3a4a2c');gr.addColorStop(1,'#2c3826');g.fillStyle=gr;g.fillRect(0,0,MAP.w,MAP.h);
+ for(let i=0;i<5000;i++){g.fillStyle=`rgba(${60+r()*50|0},${80+r()*50|0},${40+r()*30|0},${.06+r()*.08})`;g.beginPath();g.ellipse(r()*MAP.w,r()*MAP.h,6+r()*40,4+r()*22,r()*3,0,7);g.fill()}
+ g.lineCap='round';const river=(w,c)=>{g.strokeStyle=c;g.lineWidth=w;g.beginPath();for(let x=-50;x<=MAP.w+50;x+=20){const y=riverY(x);x<0?g.moveTo(x,y):g.lineTo(x,y)}g.stroke()};
+ river(260,'#5b5238');river(200,'#2f5563');river(120,'#3a6c7c');
+ g.strokeStyle='#6d5b40';g.lineWidth=130;g.beginPath();g.moveTo(...lanePts[0]);g.lineTo(...lanePts[1]);g.stroke();g.strokeStyle='#7d6a4b';g.lineWidth=86;g.stroke();
  const dl=(x,y)=>{const [ax,ay]=lanePts[0],[bx,by]=lanePts[1];const dx=bx-ax,dy=by-ay;const s=clamp(((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy));return Math.hypot(x-(ax+s*dx),y-(ay+s*dy))};
- const trees=[];for(let i=0;i<1400;i++){const x=r()*MAP.w,y=r()*MAP.h;if(dl(x,y)<160||Math.abs(y-riverY(x))<170)continue;const cl=Math.sin(x/170)*Math.cos(y/140);if(cl<.05)continue;trees.push([x,y,16+r()*20])}
- trees.sort((a,b)=>a[1]-b[1]);
- for(const [x,y,s] of trees){g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.ellipse(x+6,y+s*.6,s,s*.5,0,0,7);g.fill();
-  let tg=g.createRadialGradient(x-s*.3,y-s*.4,2,x,y,s);tg.addColorStop(0,'#3e6a2c');tg.addColorStop(1,'#16280f');g.fillStyle=tg;g.beginPath();g.arc(x,y,s,0,7);g.fill()}
- // towers
- const tower=(s,c)=>{const [x,y]=laneAt(s);g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(x+8,y+26,46,20,0,0,7);g.fill();g.fillStyle='#5a5446';g.fillRect(x-30,y-30,60,60);g.fillStyle=c;g.fillRect(x-16,y-16,32,32)};
- tower(.36,'#7fd35b');tower(.64,'#e0584a');
-})();
-
-// ============ build chat / montage content ============
-const VENDORS=[['Mandiri Sejahtera',34.8,1284],['Sumber Makmur',31.2,2041],['Jaya Sumber',29.7,1512],['Abadi Jaya',27.4,986],['Sentosa Cahaya',25.9,1730],['Harapan Berkah',22.3,842],['Makmur Abadi',19.6,1120],['Berkah Mandiri',17.1,655]];
-const UNSORT=[1,3,5,0,7,2,4,6];
-
-// M1
-const TABLES=[['t0','Sales Order Line',0],['t1','Product',0],['t2','Product Template',0],['t3','Vendor Pricelist',1]];
-$('tables').innerHTML=TABLES.map((x,i)=>`<div class="tb" id="tb${i}" style="display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:8px;font-size:18px;margin-bottom:4px">
- <span><span style="font-family:monospace;background:#ebe8f4;color:#5b4d8f;border-radius:4px;padding:1px 6px;margin-right:10px;font-size:15px">${x[0]}</span>${x[1]}</span>${x[2]?'<span style="color:#e0a000;font-weight:700">⑂</span>':''}</div>`).join('');
-$('fields').innerHTML=[['Vendor','many2one'],['Price','float'],['Min Quantity','float'],['Delivery Lead Time','integer'],['Currency','many2one']].map((f,i)=>`<div id="fd${i}" style="display:flex;justify-content:space-between;padding:10px 12px;font-size:17px;border-bottom:1px solid #f0f0f3"><span>${f[0]}</span><span style="font-size:13px;color:#8a8a92;background:#f1f1f4;border-radius:4px;padding:2px 6px">${f[1]}</span></div>`).join('');
-const SHELF=[['Vendor','Vendor Pricelist › partner_id','many2one','Dimension','','Exact'],['Product','Sales Order Line › product_id','many2one','Dimension','','Exact'],['Margin %','Sales Order Line › margin_percent','float','Measure','Average','Derived'],['Qty Sold','Sales Order Line › product_uom_qty','float','Measure','Sum','Exact']];
-$('shelf').innerHTML=SHELF.map((s,i)=>`<div id="sh${i}" style="position:absolute;left:0;right:0;top:${i*112}px;height:100px;background:#fff;border:1px solid #e3e4e8;border-radius:10px;display:flex;align-items:center;gap:18px;padding:0 20px">
- <div style="color:#b0b0b8;font-size:22px">≡</div>
- <div style="flex:1"><div class="sel" style="height:42px;font-size:19px;font-weight:500;width:330px">${s[0]}</div><div style="font-size:14px;color:#7a7a82;margin-top:6px">${s[1]} <span style="background:#f1f1f4;border-radius:4px;padding:1px 6px">${s[2]}</span></div></div>
- <div class="sel" style="width:140px;font-size:16px;${s[3]=='Measure'?'background:#eef6ff;border-color:#bcd8f5':''}">${s[3]}<div class="chev"></div></div>
- ${s[4]?`<div class="sel" style="width:130px;font-size:16px">${s[4]}<div class="chev"></div></div>`:'<div style="width:130px"></div>'}
- <div class="sel" style="width:120px;font-size:16px;${s[5]=='Derived'?'background:#fff6e0;border-color:#f0d58a':''}">${s[5]}<div class="chev"></div></div></div>`).join('');
-
-// M2 table
-const ICONS=['▦','#','▮▮','≡','☰','⟋','◭','◔'];
-$('showAs').innerHTML=ICONS.map((c,i)=>`<div id="sa${i}" style="width:44px;height:44px;border-radius:6px;background:#fff;border:1px solid #d8d9de;display:flex;align-items:center;justify-content:center;font-size:19px;color:#555">${c}</div>`).join('');
-(function(){let h=`<div class="tr th" style="top:0"><span style="flex:1">Vendor</span><span class="num" style="width:230px">Margin % <span id="sortArrow" style="color:#71639e"></span></span><span class="num" style="width:200px">Qty Sold</span></div>`;
- VENDORS.forEach((v,i)=>{h+=`<div class="tr" id="qr${i}"><span style="flex:1">${v[0]}</span><span class="num" style="width:230px">${v[1].toFixed(1)}%</span><span class="num" style="width:200px">${v[2].toLocaleString('en-US')}</span></div>`});
- $('qtbl').innerHTML=h;})();
-
-// M5 dashboard
-$('gfilters').innerHTML=`<span style="color:#888">Period</span><span class="sel" id="gfP" style="height:38px;width:190px;font-size:16px">This quarter<span class="chev"></span></span><span style="color:#888;margin-left:14px">Branch</span><span class="sel" style="height:38px;width:170px;font-size:16px">All branches<span class="chev"></span></span><span style="color:#888;margin-left:14px">Vendor</span><span class="sel" style="height:38px;width:130px;font-size:16px">Any<span class="chev"></span></span>`;
-const TILES=[[30,180,470,250,'Avg margin %','kpi'],[520,180,990,250,'Margin by vendor','bar'],[30,450,720,280,'Revenue vs margin by month','line'],[770,450,360,280,'Share of margin','donut'],[1150,450,360,280,'Top products','hbar']];
-$('tiles').innerHTML=TILES.map((t,i)=>`<div class="tile" id="ti${i}" style="left:${t[0]}px;top:${t[1]}px;width:${t[2]}px;height:${t[3]}px"><h4>${t[4]}</h4><div id="tc${i}" style="position:absolute;left:22px;right:22px;top:54px;bottom:16px"></div></div>`).join('');
-
-// M6 bands
-const BANDS=[['Report Header',70],['Page Header',56],['Group Header · Vendor',62],['Detail',60],['Group Footer · Subtotal',62],['Report Footer',60]];
-(function(){let y=0,h='';BANDS.forEach((b,i)=>{h+=`<div class="band" id="bd${i}" style="top:${y}px;height:${b[1]+30}px"><div class="lbl">${b[0]}</div><div class="area" id="ba${i}"></div></div>`;y+=b[1]+30});$('bands').innerHTML=h;
- const els=[[0,[[20,20,'Vendor Margin Comparison',260],[440,20,'{today}',90]]],[1,[[20,20,'Product',80],[340,20,'Margin %',90],[560,20,'Qty Sold',90]]],[2,[[20,22,'Vendor: {vendor}',170]]],[3,[[20,20,'{product}',110],[340,20,'{margin_pct}',120],[560,20,'{qty}',70]]],[4,[[20,22,'Avg {margin_pct}',150],[560,22,'Σ {qty}',70]]],[5,[[20,20,'Grand total',120],[560,20,'Σ {qty}',70]]]];
- els.forEach(([b,list])=>{$('ba'+b).innerHTML=list.map((e,j)=>`<div class="el" id="el${b}_${j}" style="left:${e[0]}px;top:${e[1]}px">${e[2]}</div>`).join('')});
- // paper
- const rows=(v,items)=>`<div style="margin-top:16px;font-weight:600;border-bottom:1px solid #333;padding-bottom:4px">${v}</div>`+items.map(x=>`<div style="display:flex;padding:5px 0;color:#333"><span style="flex:1">${x[0]}</span><span style="width:90px;text-align:right">${x[1]}</span><span style="width:80px;text-align:right">${x[2]}</span></div>`).join('');
- $('paper').innerHTML=`<div style="font-size:22px;font-weight:600">Vendor Margin Comparison</div><div style="color:#888;font-size:13px;margin-top:4px">Printed 26/09/2026 · Portoko</div>
- <div style="display:flex;margin-top:20px;font-size:13px;color:#666;text-transform:uppercase;letter-spacing:.05em"><span style="flex:1">Product</span><span style="width:90px;text-align:right">Margin %</span><span style="width:80px;text-align:right">Qty</span></div>
- <div id="pp1">${rows('Mandiri Sejahtera',[['Kopi 01','36.1%','512'],['Minyak 29','33.9%','418'],['Gula 57','34.4%','354']])}<div style="display:flex;font-weight:600;border-top:1px solid #ccc;padding-top:5px"><span style="flex:1">Subtotal</span><span style="width:90px;text-align:right">34.8%</span><span style="width:80px;text-align:right">1,284</span></div></div>
- <div id="pp2">${rows('Sumber Makmur',[['Tisu 15','32.0%','903'],['Keju 43','30.6%','721'],['Buku 71','31.1%','417']])}<div style="display:flex;font-weight:600;border-top:1px solid #ccc;padding-top:5px"><span style="flex:1">Subtotal</span><span style="width:90px;text-align:right">31.2%</span><span style="width:80px;text-align:right">2,041</span></div></div>
- <div style="position:absolute;left:50px;right:50px;bottom:30px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:8px">Margin % is an average of line percentages. Figures are flagged "derived".</div>`;
- $('outChips').innerHTML=`<div class="chip" id="chPdf" style="background:#e5484d;color:#fff;font-weight:600;font-size:18px;padding:9px 18px;border-radius:10px">PDF</div><div class="chip" id="chXls" style="background:#1d7a45;color:#fff;font-weight:600;font-size:18px;padding:9px 18px;border-radius:10px">XLSX</div>`;
-})();
-
-// M7 screenshots
-const SHOTS=[['assets/4.png',1600],['assets/2.png',1500],['assets/5.png',1640],['assets/3.png',380]];
-$('shots').innerHTML=SHOTS.map((s,i)=>`<div class="shotimg" id="si${i}" style="width:${s[1]}px"><img src="${s[0]}"></div>`).join('');
-
-// ============ charts (svg) ============
-const PUR='#7a6bb5',GRN='#12a45c';
-function svgBars(w,h,vals,p,{hl=-1,labels=null,max=null}={}){
-  const n=vals.length,m=max||Math.max(...vals),gap=w/n,bw=gap*.62,lh=labels?34:0;let s=`<svg width="${w}" height="${h}">`;
-  for(let k=1;k<=4;k++){const y=(h-lh)*(1-k/4);s+=`<line x1="0" x2="${w}" y1="${y}" y2="${y}" stroke="#eee"/>`}
-  vals.forEach((v,i)=>{const q=E.out3(clamp(p*1.6-i*.08));const bh=(h-lh)*(v/m)*q;s+=`<rect x="${i*gap+(gap-bw)/2}" y="${h-lh-bh}" width="${bw}" height="${bh}" rx="5" fill="${i===hl?GRN:PUR}"/>`;
-   if(labels)s+=`<text x="${i*gap+gap/2}" y="${h-8}" font-size="15" text-anchor="middle" fill="#666" font-family="Inter">${labels[i]}</text>`});
-  return s+'</svg>';}
-function svgHBars(w,h,vals,labels,p,hl=0,lw=210,fs=18){const n=vals.length,m=Math.max(...vals),rh=h/n;let s=`<svg width="${w}" height="${h}">`;
-  vals.forEach((v,i)=>{const q=E.out3(clamp(p*1.6-i*.08));s+=`<text x="${lw-14}" y="${i*rh+rh*.62}" font-size="${fs}" text-anchor="end" fill="#444" font-family="Inter">${labels[i]}</text><rect x="${lw}" y="${i*rh+rh*.18}" width="${(w-lw-70)*(v/m)*q}" height="${rh*.64}" rx="5" fill="${i===hl?GRN:PUR}"/><text x="${lw+(w-lw-70)*(v/m)*q+10}" y="${i*rh+rh*.62}" font-size="16" fill="#666" font-family="Inter" opacity="${q}">${v.toFixed(1)}%</text>`});
-  return s+'</svg>';}
-function svgDonut(w,h,vals,p,{r=null,thick=.36,labels=null}={}){const cx=labels?h/2+10:w/2,cy=h/2,R=r||Math.min(w,h)/2-8,tot=vals.reduce((a,b)=>a+b,0);
-  const cols=[GRN,'#7a6bb5','#9d91cc','#b9b0dc','#cfc8e8','#ddd8ef','#e8e5f4','#f0eef8'];let a0=-Math.PI/2,s=`<svg width="${w}" height="${h}">`;const span=Math.PI*2*E.out3(p);
-  vals.forEach((v,i)=>{let a=v/tot*Math.PI*2;let st=a0-(-Math.PI/2);if(st>=span){a0+=a;return}a=Math.min(a,span-st);const a1=a0+a,ri=R*(1-thick);
-   const pt=(rr,aa)=>`${cx+rr*Math.cos(aa)},${cy+rr*Math.sin(aa)}`;const lg=a>Math.PI?1:0;
-   s+=`<path d="M${pt(R,a0)} A${R},${R} 0 ${lg} 1 ${pt(R,a1)} L${pt(ri,a1)} A${ri},${ri} 0 ${lg} 0 ${pt(ri,a0)}Z" fill="${cols[i%cols.length]}" stroke="#fff" stroke-width="3"/>`;a0+=v/tot*Math.PI*2});
-  if(labels){labels.forEach((l,i)=>{s+=`<rect x="${h+60}" y="${60+i*44}" width="16" height="16" rx="4" fill="${cols[i]}"/><text x="${h+86}" y="${74+i*44}" font-size="18" fill="#444" font-family="Inter">${l}</text>`})}
-  return s+'</svg>';}
-function svgLine(w,h,a,b,p){const n=a.length,m=Math.max(...a,...b);const pts=arr=>arr.map((v,i)=>[i*(w/(n-1)),h-10-(h-20)*v/m]);
-  const path=arr=>pts(arr).map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+','+q[1].toFixed(1)).join('');
-  const cw=w*E.io3(clamp(p*1.3));let s=`<svg width="${w}" height="${h}"><defs><clipPath id="lc"><rect width="${cw}" height="${h}"/></clipPath><linearGradient id="lg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${PUR}" stop-opacity=".28"/><stop offset="1" stop-color="${PUR}" stop-opacity="0"/></linearGradient></defs><g clip-path="url(#lc)">`;
-  s+=`<path d="${path(a)}L${w},${h}L0,${h}Z" fill="url(#lg)"/><path d="${path(a)}" stroke="${PUR}" stroke-width="3.5" fill="none"/><path d="${path(b)}" stroke="${GRN}" stroke-width="3.5" fill="none"/></g></svg>`;return s;}
-
-// ============ RENDER ============
-const gctx=$('game').getContext('2d'),mctx=$('mini').getContext('2d');
-const CLICKS=[[0.5,860,600],[1.35,1060,470],[2.2,960,640],[3.05,1140,520],[3.9,1010,580]];
-function heroPos(t){let px=900,py=620;for(let i=0;i<CLICKS.length;i++){const [ct,x,y]=CLICKS[i];const p=P(t,ct+.05,ct+.75,E.io3);px=lerp(px,x,p);py=lerp(py,y,p)}return[px,py]}
-function cursorGame(t){ // cursor path in game
-  let x=900,y=640;for(const [ct,cx,cy] of CLICKS){const p=P(t,ct-.35,ct,E.io3);x=lerp(x,cx+18,p);y=lerp(y,cy-14,p)}return[x,y]}
-
-function renderGame(t){
-  const g=gctx,camx=720+t*16,camy=260+t*5;
-  g.drawImage(terrain,camx,camy,1920,1080,0,0,1920,1080);
-  // creeps
-  const r=rng(9);
-  for(let side=0;side<2;side++)for(let i=0;i<6;i++){
-    const base=side?.585:.5, dir=side?-1:1;const s=base+dir*(.008*i)+Math.sin(t*2+i)*.002;
-    let [x,y]=laneAt(s);x-=camx;y-=camy;x+=(r()-.5)*70;y+=(r()-.5)*60;const bob=Math.sin(t*9+i*2)*2;
-    g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(x+4,y+12,14,6,0,0,7);g.fill();
-    g.fillStyle=side?'#c8483b':'#6cc04a';g.beginPath();g.arc(x,y+bob,11,0,7);g.fill();
-    g.fillStyle='#111';g.fillRect(x-16,y-24,32,5);g.fillStyle=side?'#e05a4a':'#72d650';g.fillRect(x-16,y-24,32*(.3+((i*37)%70)/100),5);}
-  // hero
-  const [hx,hy]=heroPos(t);
-  g.strokeStyle='rgba(90,255,120,.8)';g.lineWidth=3;g.beginPath();g.ellipse(hx,hy+14,38,17,0,0,7);g.stroke();
-  let hg=g.createRadialGradient(hx-6,hy-8,2,hx,hy,26);hg.addColorStop(0,'#bff3ff');hg.addColorStop(1,'#2a78b0');g.fillStyle=hg;g.beginPath();g.arc(hx,hy,24,0,7);g.fill();
-  g.fillStyle='#111';g.fillRect(hx-40,hy-52,80,9);g.fillStyle='#5fd35a';g.fillRect(hx-40,hy-52,80*.82,9);
-  // enemy hero
-  const ex=1290+Math.sin(t*1.3)*30-t*8, ey=440+Math.cos(t*1.1)*20;
-  const ehp=clamp(1-P(t,1.9,2.2)*.35-P(t,3.6,3.9)*.45-P(t,2.8,3.0)*.1);
-  g.strokeStyle='rgba(255,80,70,.7)';g.beginPath();g.ellipse(ex,ey+14,36,16,0,0,7);g.stroke();
-  let eg=g.createRadialGradient(ex-6,ey-8,2,ex,ey,24);eg.addColorStop(0,'#ffc2a8');eg.addColorStop(1,'#a3302a');g.fillStyle=eg;g.beginPath();g.arc(ex,ey,23,0,7);g.fill();
-  g.fillStyle='#111';g.fillRect(ex-40,ey-50,80,9);g.fillStyle='#e0584a';g.fillRect(ex-40,ey-50,80*ehp,9);
-  // spells: nova rings
-  for(const st of [1.85,3.55]){const p=clamp((t-st)/.55);if(p>0&&p<1){g.strokeStyle=`rgba(140,220,255,${1-p})`;g.lineWidth=10*(1-p)+2;g.beginPath();g.ellipse(hx,hy,40+p*420,(40+p*420)*.55,0,0,7);g.stroke();}
-    const q=clamp((t-st-.2)/.9);if(q>0&&q<1){g.font='bold 34px Inter';g.fillStyle=`rgba(255,90,70,${1-q})`;g.fillText(st<3?'-284':'-412',ex+30,ey-60-q*50)}}
-  // projectile
-  const pr=clamp((t-2.75)/.3);if(pr>0&&pr<1){g.fillStyle='#ffd27a';g.beginPath();g.arc(lerp(hx,ex,pr),lerp(hy,ey,pr),8,0,7);g.fill()}
-  // click markers
-  for(const [ct,x,y] of CLICKS){const p=clamp((t-ct)/.4);if(p>0&&p<1){g.strokeStyle=`rgba(80,255,110,${1-p})`;g.lineWidth=3;for(let k=0;k<4;k++){const a=k*Math.PI/2+.78,d=26-p*14;g.beginPath();g.moveTo(x+Math.cos(a)*d,y+Math.sin(a)*d*.6);g.lineTo(x+Math.cos(a)*(d+10),y+Math.sin(a)*(d+10)*.6);g.stroke()}}}
-  // minimap
-  const m=mctx;m.fillStyle='#22331c';m.fillRect(0,0,260,260);m.strokeStyle='#2f5a68';m.lineWidth=14;m.beginPath();m.moveTo(0,30);m.lineTo(260,230);m.stroke();
-  m.strokeStyle='#6d5b40';m.lineWidth=7;m.beginPath();m.moveTo(10,250);m.lineTo(250,10);m.stroke();
-  m.strokeStyle='#fff';m.lineWidth=2;m.strokeRect(camx/MAP.w*260,camy/MAP.h*260,1920/MAP.w*260,1080/MAP.h*260);
-  [[.3,.7,'#72d650'],[.36,.62,'#72d650'],[.62,.4,'#e0584a'],[.7,.25,'#e0584a'],[.2,.3,'#72d650'],[.8,.8,'#e0584a']].forEach(([x,y,c])=>{m.fillStyle=c;m.beginPath();m.arc(x*260,y*260,5,0,7);m.fill()});
-  // hud
-  const cl=31*60+42+Math.floor(t);$('clock').textContent=`${Math.floor(cl/60)}:${String(cl%60).padStart(2,'0')}`;
-  const mp=64-P(t,1.85,1.9)*12-P(t,3.55,3.6)*16;$('mpFill').style.width=mp+'%';$('mpTxt').textContent=`${Math.round(1100*mp/100)} / 1100`;
-  [[1.85,6],[3.55,9],[2.75,3]].forEach(([st,dur],k)=>{const i=[0,3,1][k];const e=t-st;const el=$('cd'+i),tx=$('cdt'+i);
-    if(e>0&&e<dur){const f=1-e/dur;el.style.background=`conic-gradient(rgba(0,0,0,.65) ${f*360}deg,transparent 0)`;tx.textContent=Math.ceil(dur-e)}else{el.style.background='none';tx.textContent=''}});
+ const tr=[];for(let i=0;i<1400;i++){const x=r()*MAP.w,y=r()*MAP.h;if(dl(x,y)<160||Math.abs(y-riverY(x))<170)continue;if(Math.sin(x/170)*Math.cos(y/140)<.05)continue;tr.push([x,y,16+r()*20])}
+ tr.sort((a,b)=>a[1]-b[1]);for(const [x,y,s] of tr){let tg=g.createRadialGradient(x-s*.3,y-s*.4,2,x,y,s);tg.addColorStop(0,'#46743a');tg.addColorStop(1,'#16280f');g.fillStyle=tg;g.beginPath();g.arc(x,y,s,0,7);g.fill()}})();
+function renderTex(t){
+  const g=$('game').getContext('2d'),cx=720+t*14,cy=260+t*4;g.drawImage(terrain,cx,cy,1920,1080,0,0,1920,1080);
+  const r=rng(9);for(let sd=0;sd<2;sd++)for(let i=0;i<6;i++){const s=(sd?.585:.5)+(sd?-1:1)*.008*i+Math.sin(t*2+i)*.002;let [x,y]=laneAt(s);x-=cx;y-=cy;x+=(r()-.5)*70;y+=(r()-.5)*60;g.fillStyle=sd?'#c8483b':'#6cc04a';g.beginPath();g.arc(x,y+Math.sin(t*9+i*2)*2,11,0,7);g.fill()}
+  const hx=960+Math.sin(t*.9)*80,hy=560+Math.cos(t*.7)*40;g.strokeStyle='rgba(90,255,120,.8)';g.lineWidth=3;g.beginPath();g.ellipse(hx,hy+14,38,17,0,0,7);g.stroke();g.fillStyle='#6fc8f0';g.beginPath();g.arc(hx,hy,24,0,7);g.fill();
+  const ex=1280-t*6,ey=450;g.fillStyle='#d0503f';g.beginPath();g.arc(ex,ey,23,0,7);g.fill();
+  const p=clamp((t-4.3)%1.6/.5);if(p>0&&p<1){g.strokeStyle=`rgba(140,220,255,${1-p})`;g.lineWidth=8;g.beginPath();g.ellipse(hx,hy,40+p*380,(40+p*380)*.55,0,0,7);g.stroke()}
+  $('clock').textContent='31:'+String(42+Math.floor(t)).padStart(2,'0');
+  const bi=P(t,T.banner,T.banner+.45,E.out3);$('banner').style.transform=`translateX(${(1-bi)*1000}px) scale(1.65)`;$('banner').style.opacity=t<T.banner?0:1;
 }
 
-function setMsg(id,wrapId,t0,{them=true,dur=.45}={}){
-  const w=$(wrapId),m=$(id);if(!w._h){w.style.height='auto';w._h=w.offsetHeight}
-  const p=P(t0.t,t0.a,t0.a+dur,E.out3);
-  const q=P(t0.t,t0.a,t0.a+dur*1.1,E.back);
-  w.style.height=(w._h*p)+'px';
-  m.style.opacity=clamp(p*2);m.style.transform=`scale(${lerp(.7,1,q)}) translateY(${(1-p)*14}px)`;
-  return p;}
-function hideWrap(id){$(id).style.height='0px'}
-
-function renderTyping(id,wid,t,a,b){ // typing bubble visible between a and b
-  const w=$(wid),m=$(id);if(!w._h){w.style.height='auto';w._h=w.offsetHeight}
-  const pin=P(t,a,a+.3),pout=P(t,b-.05,b+.12,E.lin);const p=pin*(1-pout);
-  if(t<a||t>b+.12){w.style.height='0px';m.style.opacity=0;return}
-  w.style.height=(w._h*(t<b?pin:(1-pout)))+'px';m.style.opacity=p;m.style.transform=`scale(${lerp(.6,1,E.back(pin))})`;
-  [...m.children].forEach((d,i)=>{d.style.transform=`translateY(${-Math.max(0,Math.sin((t*7-i*.7)))*7}px)`;d.style.opacity=.5+.5*Math.max(0,Math.sin(t*7-i*.7))});
+// ================= chat =================
+function wrapAnim(id,t,a,dur=.3){const w=$(id);if(w._h==null){w.style.height='auto';w._h=w.offsetHeight}
+  const p=P(t,a,a+dur,E.out3);w.style.height=(w._h*p)+'px';w.firstElementChild.style.opacity=clamp(p*1.5);w.firstElementChild.style.transform=`translateY(${(1-p)*10}px)`}
+function typingAnim(id,t,a,b){const w=$(id);if(w._h==null){w.style.height='auto';w._h=w.offsetHeight}
+  if(t<a||t>=b){w.style.height='0px';return}const p=P(t,a,a+.25);w.style.height=(w._h*p)+'px';
+  [...w.querySelectorAll('i')].forEach((d,i)=>d.style.opacity=.35+.65*Math.max(0,Math.sin(t*6-i*.9)))}
+function renderChat(t){
+  typingAnim('wT1',t,T.typ1,T.b2);wrapAnim('w2',t,T.b2);
+  typingAnim('wT2',t,T.typ2,T.b3);wrapAnim('w3',t,T.b3);
+  $('dPrev').textContent=t>=T.b3?'Actually we need it in an hour. ASAP please!! 🙏':t>=T.b2?'We want to know which supplier gives us the best margin…':'Hey Mike 👋 we need a new report.';
+  let s='',sel=false;
+  if(t<T.del){s=Array.from(TXT1).slice(0,countAt(ty1,t)).join('');sel=t>=T.selAll}
+  else if(t<T.bs0){s=Array.from(TXT2).slice(0,countAt(ty2,t)).join('')}
+  else s=Array.from(TXT2).slice(0,N2-countAt(bs,t)).join('');
+  const active=(t>ty1[0]-.1&&t<T.ty1end+.3)||(t>ty2[0]-.1&&t<T.ty2end+.3)||(t>T.bs0&&t<T.bsEnd+.3);
+  const caretOn=active||Math.floor(t*1.9)%2===0;
+  const focused=t>ty1[0]-.6;
+  $('infield').innerHTML=(s?(sel?`<span class="hl">${emo(s)}</span>`:emo(s)):'')+(focused&&caretOn&&!sel?'<span id="caret"></span>':'')+(!s?`<span class="ph">${focused?'':'Message'}</span>`:'');
+  $('send').style.visibility=s?'visible':'hidden';
 }
 
-function renderScreen(t){
-  // camera
-  let z,cx,cy;
-  if(t<T.call){
-    const pin=P(t,.2,3.4,E.io5);
-    z=lerp(.58,1,pin);cx=960;cy=lerp(690,540,pin);
-    // subtle drift during reading
-    z*=1+.035*P(t,T.b2,T.b2+4.5,E.io3)-.035*P(t,14.5,15.2,E.io3);
-    // push in on input during the sad backspace + pause
-    const pp=P(t,T.b3+.6,T.cut,E.io3);z*=lerp(1,1.32,pp);cx=lerp(cx,960,pp);cy=lerp(cy,880,pp);cy=Math.min(cy,1080-540/z);
-    // shake on "ASAP"
-    if(t>T.b3&&t<T.b3+.35){const k=(1-(t-T.b3)/.35)*6;cx+=Math.sin(t*90)*k;cy+=Math.cos(t*77)*k}
-  } else {
-    const lt=t-T.call;z=lerp(1.12,1.0,E.out3(clamp(lt/1.2)));cx=960;cy=lerp(620,540,E.out3(clamp(lt/1.2)));
-    z*=lerp(1,.96,P(t,T.b5,T.end,E.io3));
-  }
-  $('cam').style.transform=`translate(960px,540px) scale(${z}) translate(${-cx}px,${-cy}px)`;
+// ================= odoo data =================
+const V=[['Northwind Supply',34.8,1284],['Harbor & Co.',31.2,2041],['Summit Traders',29.7,1512],['Bluebell Foods',27.4,986],['Oakridge Goods',25.9,1730],['Pioneer Wholesale',22.3,842],['Crescent Imports',19.6,1120],['Evergreen Distribution',17.1,655]];
+const UNS=[1,3,5,0,7,2,4,6];
+(function(){
+ const ic=['▦','#','bar','≡','☰','⟋','◭','◔'];
+ $('showas').innerHTML=ic.map((c,i)=>`<div class="icb" id="sa${i}">${c==='bar'?'<svg width="22" height="20"><rect x="1" y="9" width="4" height="10" fill="#374151"/><rect x="8" y="3" width="4" height="16" fill="#374151"/><rect x="15" y="6" width="4" height="13" fill="#374151"/></svg>':`<span style="font-size:20px">${c}</span>`}</div>`).join('');
+ $('rows').innerHTML=V.map((v,i)=>`<div class="tr" id="r${i}"><span style="flex:1">${v[0]}</span><span class="num" style="width:260px">${v[1].toFixed(2)}</span><span class="num" style="width:220px">${v[2].toLocaleString('en-US')}.00</span></div>`).join('');
+ $('grpDD').innerHTML=['Product','Salesperson','Category','Vendor','Sold On: Month'].map((x,i)=>`<div id="go${i}">${x}</div>`).join('');
+ // dashboard tiles (2x2)
+ const TT=[['Margin by Vendor',30,160],['Average Margin % by Category',985,160],['Margin by Salesperson',30,600],['Qty Sold by Vendor',985,600]];
+ $('tiles').innerHTML=TT.map((x,i)=>`<div class="tile" style="left:${x[1]}px;top:${x[2]}px;width:905px;height:400px"><h4>${x[0]}</h4><div class="minisel" id="ms${i}"><span id="mst${i}">Default order</span><span class="chv" style="width:9px;height:9px"></span></div><div id="tc${i}" style="position:absolute;left:0;right:0;top:56px;bottom:0"></div></div>`).join('');
+ $('tileDD').innerHTML=['Default order','Margin (largest first)','Margin (smallest first)','Vendor (A–Z)'].map((x,i)=>`<div id="to${i}">${x}</div>`).join('');
+ const RL=[['Supplier Sales by Qty','Product Sales per Supplier'],['Collections List (as of date)','Open Receivables'],['Margin Leak Report','Margin Leak (sold at or below cost)'],['Product Margin Report','Sales Margin (line grain)'],['Vendor Margin Comparison','Vendor Margin (fan-out - compare, do not total)']];
+ $('rlist').innerHTML=`<div class="tr th" style="position:relative;height:60px;padding:0 30px"><span style="width:44px">☐</span><span style="width:560px">Name</span><span style="width:760px">Dataset</span><span style="width:260px">Paper Orientation</span><span>Shared With</span></div>`+RL.map((r,i)=>`<div class="tr" style="position:relative;height:60px;padding:0 30px" id="rl${i}"><span style="width:44px;color:#9aa0a6">☐</span><span style="width:560px">${r[0]}</span><span style="width:760px">${r[1]}</span><span style="width:260px">Portrait</span><span style="margin-left:auto;font-weight:600;color:#1f2937">Run</span></div>`).join('');
+ const grp=(n,items,sub)=>`<div style="margin-top:22px;font-weight:600;border-bottom:1.5px solid #222;padding-bottom:5px">${n}</div>`+items.map(x=>`<div style="display:flex;padding:6px 0"><span style="flex:1">${x[0]}</span><span style="width:120px;text-align:right">${x[1]}</span><span style="width:110px;text-align:right">${x[2]}</span></div>`).join('')+`<div style="display:flex;font-weight:600;border-top:1px solid #bbb;padding-top:6px"><span style="flex:1">Subtotal</span><span style="width:120px;text-align:right">${sub[0]}</span><span style="width:110px;text-align:right">${sub[1]}</span></div>`;
+ $('page').innerHTML=`<div style="font-size:28px;font-weight:600">Vendor Margin Comparison</div><div style="color:#777;margin-top:6px;font-size:15px">My Company · printed 26/09/2026</div>
+ <div style="display:flex;margin-top:30px;font-size:13px;color:#666;letter-spacing:.06em"><span style="flex:1">PRODUCT</span><span style="width:120px;text-align:right">MARGIN %</span><span style="width:110px;text-align:right">QTY SOLD</span></div>
+ ${grp('Northwind Supply',[['Arabica Coffee 1 kg','36.10','512'],['Olive Oil 500 ml','33.90','418'],['Cane Sugar 1 kg','34.40','354']],['34.80','1,284'])}
+ ${grp('Harbor & Co.',[['Tissue 10-pack','32.00','903'],['Cheddar 200 g','30.60','721'],['Notebook A5','31.10','417']],['31.20','2,041'])}
+ ${grp('Summit Traders',[['Green Tea 100 g','30.20','688'],['Rice 5 kg','29.10','824']],['29.70','1,512'])}`;
+})();
 
-  const gt=t<T.call?Math.min(t,T.open+1.5):8+(t-T.call);
-  renderGame(gt);
-  // game blur when chat open
-  const open=t<T.call?P(t,T.open,T.open+.55,E.out3):1;
-  $('gameLayer').style.filter=open>0?`blur(${open*14}px) brightness(${1-open*.45}) saturate(${1-open*.3})`:'none';
+// simple chart.js-like svg
+function barsSVG(w,h,labels,vals,p,{max=null,color='#4ea7f2',rot=false}={}){
+  const m=max||Math.max(...vals)*1.1,n=vals.length,pl=m>=1e5?130:70,pb=rot?90:44,W=w-pl-10,H=h-pb-10,gap=W/n,bw=gap*.72;let s=`<svg width="${w}" height="${h}" font-family="Inter">`;
+  for(let k=0;k<=4;k++){const y=10+H*(1-k/4);s+=`<line x1="${pl}" x2="${w-10}" y1="${y}" y2="${y}" stroke="#e5e5e5"/><text x="${pl-10}" y="${y+5}" font-size="15" fill="#666" text-anchor="end">${(m*k/4).toFixed(m<5?1:0)}</text>`}
+  vals.forEach((v,i)=>{const bh=H*v/m*E.out3(p);const x=pl+i*gap+(gap-bw)/2;s+=`<rect x="${x}" y="${10+H-bh}" width="${bw}" height="${bh}" fill="${color}"/>`;
+   s+=rot?`<text transform="translate(${x+bw/2},${h-pb+22}) rotate(-20)" font-size="15" fill="#666" text-anchor="end">${labels[i]}</text>`:`<text x="${x+bw/2}" y="${h-16}" font-size="16" fill="#666" text-anchor="middle">${labels[i]}</text>`});
+  return s+'</svg>';}
 
-  // toast
-  const tin=P(t,T.toast,T.toast+.5,E.back),tout=P(t,T.click+.02,T.click+.25);
-  $('toast').style.display=(t>T.toast&&t<T.click+.25)?'flex':'none';
-  $('toast').style.transform=`translateX(${(1-tin)*480}px) scale(${1-.04*P(t,T.click-.08,T.click,E.lin)+.04*P(t,T.click,T.click+.08)})`;
-  $('toast').style.opacity=1-tout;
+// cursor path helper: list of [t, x, y]
+function curAt(path,t){let x=path[0][1],y=path[0][2];for(let i=1;i<path.length;i++){const [t1,x1,y1]=path[i],[t0]=path[i-1];const p=E.io3(clamp((t-t0)/(t1-t0)));x=lerp(x,x1,p);y=lerp(y,y1,p)}return[x,y]}
+function drawCur(x,y,t,clicks){const c=$('cur');c.style.display='block';let s=1;for(const ct of clicks)if(t>=ct-.04&&t<ct+.08)s=.86;c.style.transform=`translate(${x-3}px,${y-2}px) scale(${s})`}
 
-  // chat window
-  const ch=$('chat');show(ch,open>0);ch.style.display=open>0?'flex':'none';
-  if(t<T.call){ch.style.transform=`scale(${lerp(.25,1,open)})`;ch.style.opacity=clamp(open*1.6);}
-  else{ch.style.transform='none';ch.style.opacity=1}
-
-  // messages
-  const tt={t};
-  const B1=setMsg('m1','w1',{t,a:T.b1});
-  renderTyping('mT1','wT1',t,T.typ1,T.b1);
-  renderTyping('mT2','wT2',t,T.typ2,T.b2);
-  setMsg('m2','w2',{t,a:T.b2});
-  renderTyping('mT3','wT3',t,T.typ3,T.b3);
-  setMsg('m3','w3',{t,a:T.b3});
-  // callback
-  if(t>=T.call){$('wD').style.height='auto';setMsg('m4','w4',{t,a:T.b4});renderTyping('mT3','wT3',t,T.typ5,T.b5);setMsg('m5','w5',{t,a:T.b5});}
-  else{hideWrap('wD');hideWrap('w4');hideWrap('w5');}
-  if(t<T.b1){$('w1').style.height='0px'}
-  // status line
-  const typingNow=(t>T.typ1&&t<T.b1)||(t>T.typ2&&t<T.b2)||(t>T.typ3&&t<T.b3)||(t>T.typ5&&t<T.b5);
-  $('status').textContent=typingNow?'typing…':'Client · online';
-
-  // input field
-  let html='',hasText=false,caret=true;
-  if(t<T.call){
-    if(t<T.del1){const n=countAt(ty1,t);const s=Array.from(TXT1).slice(0,n).join('');hasText=n>0;
-      html=(t>=T.selAll&&n>0)?`<span class="hl">${emo(s)}</span>`:emo(s);
-      if(t>T.ty1end-.9&&t<T.selAll)caret=true;}
-    else if(t<T.bs0){const n=countAt(ty2,t);html=emo(Array.from(TXT2).slice(0,n).join(''));hasText=n>0}
-    else{const n=N2-countAt(bs,t);html=emo(Array.from(TXT2).slice(0,n).join(''));hasText=n>0}
-  }
-  const typingActive=(t>14.7&&t<T.ty1end+.05)||(t>T.del1+.5&&t<T.ty2end+.05)||(t>T.bs0&&t<T.bsEnd);
-  const blinkOn=typingActive||(Math.floor(t*2.2)%2===0);
-  $('infield').innerHTML=(hasText?html:'')+(t>T.b2+1.5&&t<T.cut&&blinkOn?'<span id="caret"></span>':'')+(!hasText?'<span class="ph">'+(t>T.b2+1.5&&t<T.cut?'':'Type a message')+'</span>':'');
-  $('send').style.background=hasText?'#0e9352':'#c9cacf';
-
+// ================= product shots =================
+function renderQ(t){ // p1..p4
+  show('L_q',true);const oq=$('oq');
+  // framing: p2 is a closer static framing on the table
+  if(t>=T.p2&&t<T.p3){oq.style.transform='translate(-560px,-200px) scale(1.38)'}else oq.style.transform='none';
+  const cG1=T.p1+1.0,cG2=T.p1+1.9;      // clicks: open grouping select, pick Vendor
+  const grouped=t>=cG2;
+  $('grpChip').style.display=grouped?'flex':'none';
+  // dropdown
+  const dd=$('grpDD');const open=t>=cG1&&t<cG2;dd.style.display=open?'block':'none';
+  const gs=$('grpSel').getBoundingClientRect();dd.style.top=(gs.bottom)+'px';
+  [0,1,2,3,4].forEach(i=>$('go'+i).className=(open&&t>cG1+.45&&i===3)?'hv':'');
+  // table
+  const sorted=t>=T.p2+1.05;
+  $('hMargin').innerHTML=sorted?'Margin % <span style="color:#374151">▾</span>':'Margin %';
+  $('sortSel').firstChild.textContent=sorted?'Margin % (avg)':'Default order';
+  const vis=grouped&&t>=cG2+.18;
+  V.forEach((v,i)=>{const el=$('r'+i);const pos=sorted?i:UNS.indexOf(i);el.style.top=(57+pos*57)+'px';el.style.display=vis?'flex':'none'});
+  // chart
+  const chartOn=t>=T.p3+1.1;$('chart').style.display=chartOn?'block':'none';
+  [...Array(8)].forEach((_,i)=>$('sa'+i).className='icb'+(((!chartOn&&i===0)||(chartOn&&i===2))?' on':''));
+  $('sa0').style.color=!chartOn?'#fff':'#374151';
+  if(chartOn){const p=clamp((t-T.p3-1.1)/.9);$('chart').innerHTML=barsSVG(1340,760,V.map(v=>v[0]),V.map(v=>v[1]),p,{max:40,rot:true});}
+  document.querySelectorAll('#qright .tr').forEach(e=>e.style.visibility=chartOn?'hidden':'visible');
   // cursor
-  let cx2,cy2,cop=1;
-  if(t<T.toast+.6){[cx2,cy2]=cursorGame(t)}
-  else if(t<T.open+.4){const [gx,gy]=cursorGame(t);const p=P(t,T.toast+.75,T.click-.05,E.io3);cx2=lerp(gx,1700,p);cy2=lerp(gy,108,p)}
-  else if(t<T.ty2end+.2){cx2=1700;cy2=108;cop=1-P(t,T.open+.2,T.open+.5)}
-  else{const p=P(t,T.ty2end+.15,T.b3-.05,E.io3);cx2=lerp(1260,1382,p);cy2=lerp(1040,980,p);cop=P(t,T.ty2end+.1,T.ty2end+.3)*(1-P(t,T.bs0+.2,T.bs0+.6))}
-  if(t>=T.call)cop=0;
-  $('cursor').style.transform=`translate(${cx2-3}px,${cy2-2}px)`;$('cursor').style.opacity=cop;
-  // click fx
-  const cfx=$('clickfx');const cp=clamp((t-T.click)/.35);
-  if(cp>0&&cp<1){cfx.style.display='block';cfx.style.left=(1700-30)+'px';cfx.style.top=(108-30)+'px';cfx.style.opacity=1-cp;cfx.style.transform=`scale(${.3+cp})`}else cfx.style.display='none';
+  let path,clicks;
+  if(t<T.p2){path=[[T.p1,1150,700],[cG1-.05,300,gs.top+23],[cG1+.35,300,gs.top+23],[cG2-.05,200,gs.bottom+4*42-20],[cG2+.8,700,640]];clicks=[cG1,cG2]}
+  else if(t<T.p3){const hr=$('hMargin').getBoundingClientRect();path=[[T.p2,1500,860],[T.p2+1.0,hr.right-70,hr.top+hr.height/2],[T.p2+2.4,hr.right-40,hr.top+hr.height/2+90]];clicks=[T.p2+1.05]}
+  else {const sr=$('sa2').getBoundingClientRect();path=[[T.p3,900,700],[T.p3+1.0,sr.left+24,sr.top+24],[T.p3+2.4,sr.left+80,sr.top-60]];clicks=[T.p3+1.05]}
+  const [x,y]=curAt(path,t);
+  // cursor coords are in screen space; during the closer framing they are given in screen space too
+  drawCur(x,y,t,clicks);
+}
+function renderD(t){
+  show('L_d',true);const lt=t-T.p4;
+  const c1=T.p4+.95,c2=T.p4+1.75;const sorted=t>=c2;
+  const labs=V.map(v=>v[0].split(' ')[0]);
+  const order=sorted?[0,1,2,3,4,5,6,7]:UNS;
+  const vm=order.map(i=>V[i][1]*1e6*0.9),vl=order.map(i=>labs[i]);
+  const p=sorted?clamp((t-c2)/.8):1;
+  $('tc0').innerHTML=barsSVG(905,340,vl,vm,p,{max:40e6,rot:true}).replace(/>(\d+)(<\/text>)/g,(m,a,b)=>'>'+Number(a).toLocaleString('en-US')+b);
+  $('tc1').innerHTML=barsSVG(905,340,['Beverages','Snacks','Staples','Care','Stationery','Home'],[.34,.31,.35,.31,.29,.32],1,{max:.4});
+  $('tc2').innerHTML=barsSVG(905,330,['Emma','Lucas','Olivia','Noah'],[28e6,32e6,33e6,29e6],1,{max:35e6}).replace(/>(\d+)(<\/text>)/g,(m,a,b)=>'>'+Number(a).toLocaleString('en-US')+b);
+  $('tc3').innerHTML=barsSVG(905,330,UNS.map(i=>labs[i]),UNS.map(i=>V[i][2]),1,{max:2500,rot:true});
+  $('mst0').textContent=sorted?'Margin (largest first)':'Default order';
+  const dd=$('tileDD');const open=t>=c1&&t<c2;dd.style.display=open?'block':'none';
+  const ms=$('ms0').getBoundingClientRect();dd.style.left=(ms.right-300)+'px';dd.style.top=(ms.bottom+2)+'px';
+  [0,1,2,3].forEach(i=>$('to'+i).className=(open&&t>c1+.4&&i===1)?'hv':'');
+  const path=[[T.p4,1300,760],[c1-.05,ms.left+60,ms.top+18],[c1+.3,ms.left+60,ms.top+18],[c2-.05,ms.right-160,ms.bottom+2+42*1+22],[c2+.8,1000,520]];
+  const [x,y]=curAt(path,t);drawCur(x,y,t,[c1,c2]);
+}
+function renderR(t){
+  show('L_r',true);const c=T.p5+1.1;const pdf=t>=c+.35;
+  $('pdfv').style.display=pdf?'block':'none';
+  if(!pdf){const r=$('rl4').getBoundingClientRect();const path=[[T.p5,1100,820],[c-.05,1795,r.top+30],[c+.5,1795,r.top+30]];const [x,y]=curAt(path,t);drawCur(x,y,t,[c]);$('rl4').style.background=t>c-.4?'#f2f2f4':'#fff'}
+  else $('cur').style.display='none';
 }
 
-function capIn(el,lt){const p=P(lt,0,.35,E.out3);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*18}px)`;el.style.filter=`blur(${(1-p)*6}px)`}
-function camw(el,z,cx,cy){el.style.transform=`translate(960px,540px) scale(${z}) translate(${-cx}px,${-cy}px)`}
-
-function renderMontage(t){
-  ['M1','M2','M5','M6','M7'].forEach(id=>show($(id),false));
-  // M1 dataset builder
-  if(t<T.m2){const lt=t-T.m1;show($('M1'),true);capIn($('c1'),lt);
-    const z=lerp(1.0,1.06,lt/1.5)+.08*(1-E.out5(clamp(lt/.5)));camw($('k1'),z,lerp(930,1010,E.io3(clamp(lt/1.5))),280+280/z);
-    TABLES.forEach((_,i)=>{const el=$('tb'+i);const p=i<3?1:P(lt,.05,.35,E.back);el.style.opacity=i<3?1:clamp(p*2);el.style.transform=`translateX(${(1-p)*-30}px)`;el.style.background=i===3?`rgba(113,99,158,${.10+.1*(1-P(lt,.4,1.2))})`:'transparent'});
-    [0,1,2,3,4].forEach(i=>{const el=$('fd'+i);el.style.opacity=P(lt,.2+i*.04,.4+i*.04)});
-    let n=0;SHELF.forEach((_,i)=>{const a=.25+i*.2;const p=P(lt,a,a+.35,E.back);if(lt>a)n++;const el=$('sh'+i);el.style.opacity=clamp(p*2);el.style.transform=`translateY(${(1-p)*-40}px) scale(${lerp(.92,1,p)})`});
-    $('colN').textContent=n;const fb=P(lt,.4,.7,E.back);$('fanBadge').style.opacity=clamp(fb*2);$('fanBadge').style.transform=`scale(${fb})`;
-    return;}
-  // M2 + M3 + M4 question builder
-  if(t<T.m5){const lt=t-T.m2;show($('M2'),true);
-    const phase=t<T.m3?2:t<T.m4?3:4;
-    const cap=$('c2');
-    if(phase===2){cap.innerHTML='Ask in business terms.<small>Pick a measure, group it, done.</small>';capIn(cap,lt)}
-    if(phase===3){cap.innerHTML='Sort it. Real top N.<small>Click a header. Largest first.</small>';capIn(cap,t-T.m3)}
-    if(phase===4){cap.innerHTML='Table. Bars. Donut.<small>Same question, any shape.</small>';capIn(cap,t-T.m4)}
-    ['q1','q2','q3','q4'].forEach((c,i)=>{const el=document.querySelector('.'+c);const p=phase>2?1:P(lt,.05+i*.12,.35+i*.12,E.back);el.style.opacity=clamp(p*2);el.style.transform=`translateX(${(1-p)*-24}px)`});
-    // table
-    const sortP=phase>=3?P(t,T.m3+.45,T.m3+.95,E.io3):0;
-    $('sortArrow').textContent=sortP>0?'▼':'';
-    $('sortSel').firstChild.textContent=sortP>0?'Margin % (avg)':'Default order';
-    VENDORS.forEach((v,i)=>{const el=$('qr'+i);const ui=UNSORT.indexOf(i);const pos=lerp(ui,i,E.io3(clamp(sortP*1.15-(ui%4)*.04)));
-      const cin=phase>2?1:P(lt,.45+ui*.06,.8+ui*.06,E.out3);
-      el.style.top=(60+pos*62)+'px';el.style.opacity=cin;el.style.transform=`translateY(${(1-cin)*16}px)`;
-      el.style.background=(i===0&&sortP>.9)?`rgb(${lerp(249,226,P(t,T.m3+.9,T.m3+1.05))|0},${lerp(250,244,P(t,T.m3+.9,T.m3+1.05))|0},${lerp(251,234,P(t,T.m3+.9,T.m3+1.05))|0})`:'#f9fafb';el.style.zIndex=i===0?2:1;el.style.fontWeight=(i===0&&sortP>.9)?600:400});
-    // chart vs table
-    const chartMode=phase===4?(t<B(9)?0:t<B(10)?1:2):-1;
-    $('qtbl').style.display=chartMode<0?'block':'none';$('qchart').style.display=chartMode>=0?'block':'none';
-    ICONS.forEach((_,i)=>{const act=(chartMode<0&&i===0)||(chartMode===0&&i===2)||(chartMode===1&&i===3)||(chartMode===2&&i===7);const el=$('sa'+i);el.style.background=act?'#71639e':'#fff';el.style.color=act?'#fff':'#555';el.style.borderColor=act?'#71639e':'#d8d9de'});
-    const vals=VENDORS.map(v=>v[1]),labs=VENDORS.map(v=>v[0].split(' ')[0]);
-    if(chartMode===0)$('qchart').innerHTML=svgBars(1000,600,vals,clamp((t-B(8))/.5),{hl:0,labels:labs});
-    if(chartMode===1)$('qchart').innerHTML=svgHBars(1000,600,vals,VENDORS.map(v=>v[0]),clamp((t-B(9))/.5),0);
-    if(chartMode===2)$('qchart').innerHTML=svgDonut(1000,560,VENDORS.map(v=>v[2]),clamp((t-B(10))/.5),{labels:VENDORS.map(v=>v[0])});
-    // cameras
-    if(phase===2){const z=lerp(1.0,1.05,lt/1.5)+.08*(1-E.out5(clamp(lt/.5)));camw($('k2'),z,960,280+280/z)}
-    if(phase===3){const l3=t-T.m3;const z3=lerp(1.2,1.25,l3/1.0);camw($('k2'),z3,1185,280+300/z3);
-      // click
-    }
-    if(phase===4){const l4=t-T.m4;const z4=lerp(1.08,1.11,l4/1.5);camw($('k2'),z4,1080,280+300/z4)}
-    return;}
-  // M5 dashboard
-  if(t<T.m6){const lt=t-T.m5;show($('M5'),true);capIn($('c5'),lt);
-    {const z=lerp(1.0,1.05,lt/2)+.08*(1-E.out5(clamp(lt/.5)));camw($('k5'),z,960,280+280/z)}
-    const f=P(lt,1.15,1.45,E.io3);$('gfP').firstChild.textContent=lt>1.15?'This year':'This quarter';
-    $('gfP').style.background=lt>1.05&&lt<1.5?'#efecf8':'#fff';
-    TILES.forEach((tl,i)=>{const el=$('ti'+i);const p=P(lt,.05+i*.07,.4+i*.07,E.back);el.style.opacity=clamp(p*2);el.style.transform=`scale(${lerp(.9,1,p)})`;
-      const cp=clamp((lt-.2-i*.07)/.7),rp=f;const c=$('tc'+i);const w=tl[2]-44,h=tl[3]-70;
-      if(tl[5]==='kpi'){const v=lerp(26.1,27.4,rp)*E.out3(cp);c.innerHTML=`<div style="font-size:84px;font-weight:600;letter-spacing:-.03em;color:#1d1d1f">${v.toFixed(1)}<span style="font-size:46px">%</span></div><div style="color:${GRN};font-size:18px;font-weight:500">▲ ${lerp(1.2,2.8,rp).toFixed(1)} pts vs last period</div>`}
-      if(tl[5]==='bar'){const v=VENDORS.map((x,k)=>x[1]*lerp(1,.85+((k*7)%5)/20,rp));c.innerHTML=svgBars(w,h,v,cp,{hl:0,max:36})}
-      if(tl[5]==='line'){const a=[3,4,3.6,5,4.8,6,5.7,6.8,7.2,7,8,8.8].map((x,k)=>x*lerp(1,1+(k%3)*.05,rp)),b=a.map((x,k)=>x*.32+(k%2)*.2);c.innerHTML=svgLine(w,h,a,b,cp)}
-      if(tl[5]==='donut')c.innerHTML=svgDonut(w,h,VENDORS.slice(0,6).map((x,k)=>x[2]*lerp(1,1+(k%2)*.3,rp)),cp);
-      if(tl[5]==='hbar')c.innerHTML=svgHBars(w,h,[36.1,34.4,33.9,32.0,31.1].map((x,k)=>x*lerp(1,1-k*.02,rp)),['Kopi 01','Gula 57','Minyak 29','Tisu 15','Buku 71'],cp,0,86,14);
-    });
-    return;}
-  // M6 report
-  if(t<T.m7){const lt=t-T.m6;show($('M6'),true);capIn($('c6'),lt);
-    {const z=lerp(1.0,1.05,lt/2)+.08*(1-E.out5(clamp(lt/.5)));camw($('k6'),z,960,280+280/z)}
-    BANDS.forEach((_,i)=>{const p=P(lt,.02+i*.07,.3+i*.07,E.out3);const el=$('bd'+i);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*20}px)`;
-      el.querySelectorAll('.el').forEach((e,j)=>{const q=P(lt,.35+i*.06+j*.05,.6+i*.06+j*.05,E.back);e.style.opacity=clamp(q*2);e.style.transform=`scale(${lerp(.6,1,q)})`})});
-    const pp=P(lt,.75,1.25,E.out5);$('paper').style.transform=`translateX(${(1-pp)*420}px) rotate(${(1-pp)*6}deg)`;$('paper').style.opacity=clamp(pp*2);
-    ['pp1','pp2'].forEach((id,i)=>{const q=P(lt,1.0+i*.18,1.3+i*.18);$(id).style.opacity=q});
-    ['chPdf','chXls'].forEach((id,i)=>{const q=P(lt,1.35+i*.12,1.65+i*.12,E.back);$(id).style.opacity=clamp(q*2);$(id).style.transform=`scale(${q}) translateY(${(1-q)*10}px)`});
-    return;}
-  // M7 screenshots
-  {const lt=t-T.m7;show($('M7'),true);capIn($('c7'),lt);const k=Math.min(3,Math.floor(lt/BEAT)),l=lt-k*BEAT;
-    SHOTS.forEach((s,i)=>{const el=$('si'+i);el.style.display=i===k?'block':'none'});
-    const el=$('si'+k);const w=SHOTS[k][1];const img=el.querySelector('img');const h=img.naturalHeight*w/img.naturalWidth;
-    const maxH=800;let sc=Math.min(1,maxH/h);
-    const z=sc*(lerp(1.07,1.0,E.out5(clamp(l/.35))));
-    el.style.left=(960-w/2)+'px';el.style.top=(620-h/2)+'px';el.style.transformOrigin='50% 50%';el.style.transform=`scale(${z})`;
-    camw($('k7'),1,960,540);}
-}
-
+// ================= main render =================
+function hideAll(){['L_tex','L_chat','L_black','L_q','L_d','L_r','L_end'].forEach(id=>show(id,false));$('cur').style.display='none'}
+window.renderTexture=function(t){hideAll();show('L_tex',true);renderTex(t)};
 window.render=function(t){
-  const room=t<T.cut||(t>=T.call&&t<T.end);
-  show($('S_room'),room);show($('S_black'),t>=T.cut&&t<T.mont);show($('S_mont'),t>=T.mont&&t<T.call);show($('S_end'),t>=T.end);
-  if(room)renderScreen(t);
-  if(t>=T.cut&&t<T.mont){
-    const a=P(t,T.title1,T.title1+.8,E.out3),b=P(t,T.title1out,T.title1out+.4,E.in3);
-    const e1=$('t1');e1.style.opacity=a*(1-b);e1.style.filter=`blur(${(1-a)*10+b*6}px)`;e1.style.transform=`translateY(${(1-a)*12}px)`;
-    const c=P(t,T.title2,T.title2+.8,E.out3),d=P(t,T.title2out-.08,T.title2out,E.in3);
-    const e2=$('t2');e2.style.opacity=c*(1-d);e2.style.filter=`blur(${(1-c)*10}px)`;e2.style.transform=`translateY(${(1-c)*12}px) scale(${1+d*.15})`;
-  }
-  if(t>=T.mont&&t<T.call)renderMontage(t);
-  if(t>=T.end){const lt=t-T.end;
-    const a=P(lt,.25,.9,E.out3);$('by').style.opacity=a;$('by').style.transform=`translateY(${(1-a)*10}px)`;
-    const w=P(lt,.55,1.45,E.io5);$('logoWrap').style.clipPath=`inset(0 ${(1-w)*100}% 0 0)`;$('logoWrap').style.transform=`scale(${lerp(1.03,1,P(lt,.55,3.5,E.out3))})`;
-    const s=P(lt,1.5,2.1,E.out3);$('endSub').style.opacity=s;$('endSub').style.transform=`translateY(${(1-s)*10}px)`;
-    const fo=P(lt,3.7,4.3,E.lin);$('flash').style.background='#fff';
-  }
-  // flash on montage entry + beat cuts
-  let fl=0;if(t>=T.mont&&t<T.mont+.12)fl=.9*(1-(t-T.mont)/.12);
-  if(t>=T.call&&t<T.call+.1)fl=.5*(1-(t-T.call)/.1);
-  $('flash').style.opacity=fl;
+  hideAll();
+  if(t<T.black){show('L_chat',true);renderChat(t);return}
+  if(t<T.G){show('L_black',true);
+    const a=P(t,T.t1,T.t1+.6)*(1-P(t,T.t1o,T.t1o+.45,E.lin));$('t1').style.opacity=a;
+    const b=P(t,T.t2,T.t2+.6)*(1-P(t,T.t2o-.3,T.t2o,E.lin));$('t2').style.opacity=b;return}
+  if(t<T.p4){renderQ(t);return}
+  if(t<T.p5){renderD(t);return}
+  if(t<T.H){renderR(t);return}
+  show('L_end',true);const lt=t-T.H;$('by').style.opacity=P(lt,.3,.9);$('logo').style.opacity=P(lt,.6,1.3);
 };
 
-// ============ audio cues ============
+// ================= cues =================
 (function(){
- CLICKS.forEach(c=>cue(c[0],'rclick',.5));
- cue(1.85,'spell');cue(3.55,'spell');cue(2.75,'hit',.8);cue(2.05,'hit');cue(3.75,'hit');
- cue(T.toast,'ping');cue(T.click,'click');cue(T.open,'swoosh',.6);
- cue(T.b1,'recv');cue(T.b2,'recv');cue(T.b3,'recv');
- ty1.forEach((x,i)=>cue(x,'key',TXT1[i]===' '?.8:1));ty2.forEach(x=>cue(x,'key',1));
- cue(T.selAll,'select');cue(T.del1,'delete');
- cue(T.b3,'sting');
- bs.forEach(x=>cue(x,'bs',.9));
- cue(T.cut,'cut');
- cue(T.title1,'tone1');cue(T.title2,'tone2');
- cue(T.mont,'drop');
- [T.m1,T.m2,T.m3,T.m4,B(9),B(10),T.m5,T.m6,T.m7,B(20),B(21),B(22)].forEach(x=>cue(x,'cutfx',.6));
- cue(T.m3+.45,'click');
- cue(T.call,'riseout');cue(T.b4,'sent');cue(T.b5,'recv');
- cue(T.end,'end');
+  cue(T.B,'cut_hands');cue(T.C,'cut_monitor');cue(T.banner,'notify');cue(T.click,'mouse');cue(T.D,'cut_chat');
+  cue(T.b2,'recv');cue(T.b3,'recv2');
+  ty1.forEach((x,i)=>cue(x,TXT1[i]===' '?'space':'key'));cue(T.Ein,'cut_in');cue(T.Eout,'cut_out');
+  cue(T.selAll,'cmdA');cue(T.del,'backspace');
+  ty2.forEach((x,i)=>cue(x,TXT2[i]===' '?'space':'key'));
+  bs.forEach(x=>cue(x,'backspace_soft'));
+  cue(T.black,'switch');cue(T.t1,'title1');cue(T.t2,'title2');
+  cue(T.p1,'cut_p1');cue(T.p1+1.0,'mouse');cue(T.p1+1.9,'mouse');
+  cue(T.p2,'cut_p2');cue(T.p2+1.05,'mouse');
+  cue(T.p3,'cut_p3');cue(T.p3+1.05,'mouse');
+  cue(T.p4,'cut_p4');cue(T.p4+.95,'mouse');cue(T.p4+1.75,'mouse');
+  cue(T.p5,'cut_p5');cue(T.p5+1.1,'mouse');cue(T.p5+1.45,'cut_pdf');
+  cue(T.H,'end');
 })();
 window.CUES=CUES;
 </script>
