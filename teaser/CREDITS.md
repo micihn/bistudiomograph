@@ -1,38 +1,40 @@
 # Credits and licenses
 
-## Footage (Mixkit Stock Video Free License: commercial use allowed, no attribution required)
-| Clip | Used for |
+## Music
+**"Hazy After Hours"** by Alejandro Magaña (A. M.), [Mixkit](https://mixkit.co/free-stock-music/tag/technology/) (track 132), under the Mixkit Stock Music Free License. It allows commercial use and needs no attribution. The track is edited on its own bar grid (121 bpm) and not altered otherwise.
+
+## Sound effects
+All from [Mixkit](https://mixkit.co/free-sound-effects/), under the Mixkit Sound Effects Free License (commercial use, no attribution needed).
+
+| Sound | Mixkit id |
 |---|---|
-| [Fingers pressing the backlit gaming keyboard (51609)](https://mixkit.co/free-stock-video/fingers-pressing-the-backlit-gaming-keyboard-51609/) | opening close-up, typing intercut |
-| [Camera hovers over a skillful gamer's hands (51603)](https://mixkit.co/free-stock-video/camera-hovers-over-a-skillful-gamers-hands-focusing-on-the-51603/) | overhead hands |
-| [A young gamer in front of a PC monitor with green screen (51602)](https://mixkit.co/free-stock-video/a-young-gamer-in-front-of-a-pc-monitor-with-51602/) | monitor shot, screen replaced |
+| Natural ambience with flowing water and birds | 61 |
+| Fast sword hit in medieval battle | 2764 |
+| Sword slashes in battle | 2763 |
+| Sword strikes armor | 2765 |
+| Metallic sword strike | 2160 |
+| Light spell | 873 |
+| Magic sparkle poof hit | 3082 |
+| Laptop keyboard typing sequence | 2537 |
+| Typing on a laptop keyboard | 2531 |
+| Writing on a laptop keyboard | 2536 |
+| Laptop backspace typing sequence | 2539 |
+| Hard single key press in a laptop | 2542 |
+| Mouse click close | 1113 |
+| Interface option select | 2573 |
+| Message pop alert | 2354 |
+| Dry pop up notification alert | 2356 |
+| Fast small sweep transition | 166 |
+| Fast transitions swoosh | 3115 |
+| Short transition sweep | 175 |
+| Explainer video pops whoosh light pop | 3005 |
+| User interface zoom in | 2618 |
+| Long pop | 2358 |
+| Spellcaster fairy swoosh | 1463 |
+| Magic sparkle whoosh | 2350 |
+| Clear mouse clicks | 2997 |
 
-The clips are not committed. Download the 1080p files into `../foot/` as `h_51609.mp4`, `h_51603.mp4` and `g_51602.mp4` to rebuild.
-
-## Sound: every sound is a real recording, all CC0 (public domain)
-Freesound (CC0 filter):
-
-| Sound | Author | License |
-|---|---|---|
-| [Computer Gaming.wav](https://freesound.org/people/thegoose09/sounds/125377/) | thegoose09 | CC0 |
-| [Interior bedroom apartment night room tone roomtone.wav](https://freesound.org/people/franciscopcoutinho/sounds/466123/) | franciscopcoutinho | CC0 |
-| [Keyboard Typing 10 (WhiteFox, Mechanical)](https://freesound.org/people/grcekh/sounds/546167/) | grcekh | CC0 |
-| [Mouse Click Sound.mp3](https://freesound.org/people/Pixeliota/sounds/678248/) | Pixeliota | CC0 |
-| [Mouse Click.wav](https://freesound.org/people/abstraktgeneriert/sounds/213004/) | abstraktgeneriert | CC0 |
-| [mouse-click-double-00.flac](https://freesound.org/people/pbimal/sounds/534104/) | pbimal | CC0 |
-| [Retractable Pen Click In Out](https://freesound.org/people/dslrguide/sounds/321484/) | dslrguide | CC0 |
-| [pen click4.wav](https://freesound.org/people/Reitanna/sounds/323744/) | Reitanna | CC0 |
-| [marble.wav](https://freesound.org/people/jradcoolness/sounds/334222/) | jradcoolness | CC0 |
-| [Glass Tap](https://freesound.org/people/alegemaate/sounds/667275/) | alegemaate | CC0 |
-| [Fingers nails on glass bottle - tap.wav](https://freesound.org/people/ValentinPetiteau/sounds/610392/) | ValentinPetiteau | CC0 |
-| [wine glass clink](https://freesound.org/people/fleurescence/sounds/573160/) | fleurescence | CC0 |
-| [wine glass clink](https://freesound.org/people/fleurescence/sounds/573157/) | fleurescence | CC0 |
-| [Coins Fall on Table Free](https://freesound.org/people/AardsReal/sounds/842173/) | AardsReal | CC0 |
-| [Light Switch Turn Off Sound](https://freesound.org/people/ChrisTutorials/sounds/440499/) | ChrisTutorials | CC0 |
-| [Light Switch on](https://freesound.org/people/Philip_Berger/sounds/788643/) | Philip_Berger | CC0 |
-
-Instruments:
-- **Steinway B grand piano, marimba, glockenspiel**: [Versilian Community Sample Library (VCSL)](https://github.com/sgossner/VCSL), CC0
-- **Solo contrabass pizzicato**: [VS Chamber Orchestra 2 Community Edition](https://github.com/sgossner/VSCO-2-CE), CC0
+## Visuals
+Everything on screen is generated: the game terrain (`gen_terrain.py`), the wallpaper, and the recreated macOS, Messages and Odoo/BI Studio interfaces. No stock footage is used. The logo is PORTOKO's own.
 
 Fonts: Inter (SIL Open Font License).

@@ -1,35 +1,33 @@
 # BI Studio teaser (by PORTOKO)
 
-A 56-second teaser for the BI Studio Odoo module. It uses live-action footage, a desktop chat and real Odoo screens, with a soundtrack built only from real CC0 recordings.
+A 49-second motion-graphics teaser for the BI Studio Odoo module. It stays on screen the whole time and uses realistic interfaces.
 
 ## Story
-1. Real footage: hands on a gaming keyboard, then over the shoulder to the monitor. The green screen is replaced with a game, and a message banner arrives from Daniel (the client).
-2. Mike clicks it and the Messages window opens. Nothing zooms; the screen is shown flat and still.
-3. Daniel explains the report he wants. Mike types the honest answer (export everything and dump it into AI), with an intercut to real hands typing. He selects it all and deletes it.
-4. He types "Ofc, give me a couple hours 👍". Daniel replies first: "Actually we need it in an hour. ASAP please!!". Mike slowly backspaces.
-5. A light switch clicks and the screen cuts to black. "Build Odoo reports faster." then "with BI Studio", each on a soft piano chord.
-6. Real product flow, played as a screen recording with a cursor:
-   - group a question by vendor
-   - sort by Margin %
-   - show it as a bar chart
-   - sort a dashboard tile
-   - run the Vendor Margin Comparison report to PDF
+1. A full-screen MOBA with a painterly generated map, tilt-shift depth of field, glowing spells and a detailed HUD.
+2. A macOS notification (dark glass) arrives from Daniel. Mike clicks it, and the screen swipes to the Messages space the way macOS switches Spaces.
+3. The chat, unchanged from v2: Daniel asks for the supplier margin report. Mike types "just dump it into AI", deletes it, then types "Ofc, give me a couple hours 👍".
+4. Daniel replies first: "Actually we need it in an hour. ASAP please!!". The music stops dead on that bubble, and Mike backspaces in silence.
+5. Cut to black: "Build Odoo reports faster.", then "with BI Studio" as the music comes back.
+6. The drop lands on the montage: 20 beats of fast, motion-blurred cuts on the beat grid.
+   - joining models in the dataset builder
+   - choosing Average in the measure picker
+   - the result rows cascading in
+   - clicking to sort by Margin %
+   - the chart as bars, then horizontal bars, then a donut
+   - dashboard tiles flying into place
+   - report bands stacking
+   - the PDF page flipping up with PDF and XLSX
+   - a collage pulling back
 7. by PORTOKO
 
-Every cut has its own small real sound (pen click, marble, glass tap, coin, switch), and every mouse click has a real click. The music is marimba, contrabass pizzicato and piano samples at 100 bpm. See CREDITS.md.
-
-## Files
-- `teaser.html`: all screen content and timing (`T`), plus the monitor texture (`renderTexture`).
-- `render.js`: renders HTML frames and monitor textures, and writes `cues.json`.
-- `comp.py`: adds the footage, tracks the green screen (`corners_raw.json`), keys it and composites the texture.
-- `audio.py`: sequences the real samples on the cue times, including keystrokes sliced from a real keyboard recording.
-
-## Rebuild
+## Build
 ```
 pip install numpy scipy pillow imageio-ffmpeg
-node render.js            # frames/ + tex/ + cues.json
-python3 comp.py           # footage + green-screen frames into frames/
-python3 audio.py          # audio.wav (expects ../snd/wav, ../vcsl, ../vsco; see CREDITS.md)
+python3 gen_terrain.py     # assets/terrain.jpg + minimap.jpg
+node render.js             # f3/ frames (+ sub3/ sub-frames), cues.json
+python3 blur.py            # averages the sub-frames: real motion blur
+python3 audio.py           # audio.wav (expects ../mus/132.mp3 and ../sfx/<id>.mp3 from Mixkit)
 FF=$(python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
-$FF -framerate 24 -i frames/%05d.jpg -i audio.wav -c:v libx264 -crf 17 -pix_fmt yuv420p -c:a aac -shortest bi_studio_teaser.mp4
+$FF -framerate 24 -i f3/%05d.jpg -i audio.wav -c:v libx264 -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest bi_studio_teaser.mp4
 ```
+All timing lives in the `T` object in `teaser.html`. The montage runs on the song's grid (`T.BAR`, `T.BEAT`).
