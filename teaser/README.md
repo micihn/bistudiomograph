@@ -26,6 +26,7 @@ pip install numpy scipy pillow imageio-ffmpeg
 python3 gen_terrain.py     # assets/terrain.jpg + minimap.jpg
 node render.js             # f3/ frames (+ sub3/ sub-frames), cues.json
 python3 blur.py            # averages the sub-frames: real motion blur
+node fixcuts.js && python3 blur.py   # keeps hard cuts crisp (no shutter straddling a cut)
 python3 audio.py           # audio.wav (expects ../mus/132.mp3 and ../sfx/<id>.mp3 from Mixkit)
 FF=$(python3 -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())")
 $FF -framerate 24 -i f3/%05d.jpg -i audio.wav -c:v libx264 -crf 17 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest bi_studio_teaser.mp4

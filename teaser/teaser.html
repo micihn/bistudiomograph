@@ -360,7 +360,7 @@ function barsSVG(w,h,labels,vals,p,{max=40,hl=0,horizontal=false}={}){
   let s=`<svg width="${w}" height="${h}" font-family="Inter">`;const n=vals.length;
   if(!horizontal){const pl=60,pb=70,W=w-pl,H=h-pb,gap=W/n,bw=gap*.62;
     for(let k=0;k<=4;k++){const y=H*(1-k/4);s+=`<line x1="${pl}" x2="${w}" y1="${y}" y2="${y}" stroke="#eef0f3"/><text x="${pl-12}" y="${y+6}" font-size="16" fill="#9aa0a6" text-anchor="end">${max*k/4}</text>`}
-    vals.forEach((v,i)=>{const q=E.spring(clamp(p*2.2-i*.12));const bh=H*v/max*q;const x=pl+i*gap+(gap-bw)/2;s+=`<rect x="${x}" y="${H-bh}" width="${bw}" height="${Math.max(0,bh)}" rx="7" fill="${i===hl?GRN:BLUE}"/><text x="${x+bw/2}" y="${H-bh-12}" font-size="19" font-weight="600" fill="#374151" text-anchor="middle" opacity="${clamp(q)}">${(v*clamp(q)).toFixed(1)}</text><text x="${x+bw/2}" y="${h-38}" font-size="16" fill="#6b7280" text-anchor="middle">${labels[i].split(' ')[0]}</text>`})}
+    vals.forEach((v,i)=>{const q=E.spring(clamp(p*2.2-i*.12));const bh=H*v/max*q;const x=pl+i*gap+(gap-bw)/2;s+=`<rect x="${x}" y="${H-bh}" width="${bw}" height="${Math.max(0,bh)}" rx="7" fill="${i===hl?GRN:BLUE}"/><text x="${x+bw/2}" y="${H-bh-12}" font-size="19" font-weight="600" fill="#374151" text-anchor="middle" opacity="${clamp(q)}">${v.toFixed(1)}</text><text x="${x+bw/2}" y="${h-38}" font-size="16" fill="#6b7280" text-anchor="middle">${labels[i].split(' ')[0]}</text>`})}
   else{const lw=260,rh=h/n;vals.forEach((v,i)=>{const q=E.spring(clamp(p*2.2-i*.12));const bw=(w-lw-90)*v/max*q;s+=`<text x="${lw-16}" y="${i*rh+rh*.62}" font-size="19" fill="#374151" text-anchor="end">${labels[i]}</text><rect x="${lw}" y="${i*rh+rh*.18}" width="${Math.max(0,bw)}" height="${rh*.64}" rx="6" fill="${i===hl?GRN:BLUE}"/><text x="${lw+bw+12}" y="${i*rh+rh*.62}" font-size="18" font-weight="600" fill="#374151" opacity="${clamp(q)}">${v.toFixed(1)}%</text>`})}
   return s+'</svg>';}
 function donutSVG(w,h,vals,labels,p){const cx=h/2+20,cy=h/2,R=h/2-20,ri=R*.6,tot=vals.reduce((a,b)=>a+b,0);const cols=[GRN,'#4ea7f2','#7ab8f5','#9fcaf7','#bcdaf9','#d3e6fb','#e3effc','#eef5fd'];
@@ -424,9 +424,9 @@ function renderMont(t){
   if(b<14){show('s7',true);const lb=b-12,lt=lb*B;const pull=E.out5(clamp(lt/.9));
     $('dash').style.transform=`translateZ(${lerp(300,-120,pull)-lb*20}px) rotateX(${lerp(26,14,pull)}deg) rotateZ(${lerp(-6,-3,pull)}deg)`;
     TILES.forEach((tl,i)=>{const q=E.out5(clamp((lb-i*.12)/.6));const el=$('dt'+i);el.style.transform=`translateZ(${lerp(-900,0,q)}px)`;el.style.opacity=clamp(q*1.6);
-      const cp=clamp((lb-.3-i*.1)/1.2),c=$('dc'+i),w=464,h=290;
-      if(tl[3]==='kpi')c.innerHTML=`<div style="font-size:108px;font-weight:600;letter-spacing:-.04em;color:#111">${(27.4*E.out3(cp)).toFixed(1)}<span style="font-size:56px">%</span></div><div style="color:${GRN};font-size:20px;font-weight:600">▲ 2.8 pts vs last quarter</div>`;
-      if(tl[3]==='kpi2')c.innerHTML=`<div style="font-size:108px;font-weight:600;letter-spacing:-.04em;color:#111">${Math.round(10170*E.out3(cp)).toLocaleString('en-US')}</div><div style="color:#6b7280;font-size:20px">units, 8 vendors</div>`;
+      const cp=clamp((lb-.3-i*.1)/1.2),c=$('dc'+i),w=464,h=290;const ftb=((window.FT??t)-T.M)/B-12;const cpF=clamp((ftb-.3-i*.1)/1.2);
+      if(tl[3]==='kpi')c.innerHTML=`<div style="font-size:108px;font-weight:600;letter-spacing:-.04em;color:#111">${(27.4*E.out3(cpF)).toFixed(1)}<span style="font-size:56px">%</span></div><div style="color:${GRN};font-size:20px;font-weight:600">▲ 2.8 pts vs last quarter</div>`;
+      if(tl[3]==='kpi2')c.innerHTML=`<div style="font-size:108px;font-weight:600;letter-spacing:-.04em;color:#111">${Math.round(10170*E.out3(cpF)).toLocaleString('en-US')}</div><div style="color:#6b7280;font-size:20px">units, 8 vendors</div>`;
       if(tl[3]==='bar')c.innerHTML=barsSVG(w,h,V.map(v=>v[0]),V.map(v=>v[1]),cp);
       if(tl[3]==='line')c.innerHTML=lineSVG(w,h,cp);
       if(tl[3]==='donut')c.innerHTML=donutSVG(w,h,V.slice(0,4).map(v=>v[2]),[],cp).replace(`width="${w}"`,`width="${w}" viewBox="-80 0 ${w} ${h}"`);
